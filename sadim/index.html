@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<meta name="theme-color" content="#0a0612" />
+<title>سَديم · ديمو الخلفية — EDDAH OS</title>
+<style>
+  :root { --orange:#F2820C; }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { height:100%; overflow:hidden; background:#0a0612; }
+  body {
+    font-family: -apple-system, "SF Arabic", "Segoe UI", Tahoma, sans-serif;
+    color:#efeaff; position:fixed; inset:0;
+    user-select:none; -webkit-user-select:none;
+  }
+  #c { position:fixed; inset:0; width:100%; height:100%; display:block; }
+  .ui { position:fixed; inset:0; pointer-events:none; padding:22px 22px calc(22px + env(safe-area-inset-bottom)); display:flex; flex-direction:column; }
+  /* top bar */
+  .top { display:flex; align-items:center; justify-content:space-between; font-variant-numeric:tabular-nums; }
+  .clock { font-size:19px; font-weight:600; letter-spacing:.5px; color:#f3eeff; }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand .we { font-size:12px; letter-spacing:3px; color:#b9aee0; opacity:.85; }
+  .brand .os { font-size:16px; font-weight:800; letter-spacing:1px; color:#fff; }
+  .brand .a { color:var(--orange); font-size:20px; font-weight:900; transform:scaleX(-1); }
+  /* center label */
+  .mid { margin-top:auto; }
+  .idx { font-size:15px; letter-spacing:3px; color:#a99fd0; opacity:.8; }
+  .title { font-size:64px; font-weight:800; line-height:1; margin-top:10px; color:#f4f0ff; text-shadow:0 4px 40px rgba(140,90,255,.5); }
+  .sub { font-size:18px; letter-spacing:8px; color:#a99fd0; margin-top:8px; }
+  .hint { margin-top:22px; font-size:12.5px; letter-spacing:4px; color:#9085bd; display:flex; align-items:center; gap:10px; }
+  .hint .dot { width:6px; height:6px; border-radius:50%; background:var(--orange); box-shadow:0 0 10px var(--orange); }
+  /* variant dock */
+  .dock { margin-top:26px; display:flex; gap:10px; padding:14px; border-radius:24px;
+    background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.07); backdrop-filter:blur(12px);
+    width:max-content; max-width:100%; }
+  .chip { width:62px; display:flex; flex-direction:column; align-items:center; gap:7px; }
+  .chip .sw { width:56px; height:56px; border-radius:16px; border:1px solid rgba(255,255,255,.10); }
+  .chip .nm { font-size:12px; color:#b6abdd; }
+  .chip.on .sw { outline:2px solid rgba(168,130,255,.8); outline-offset:2px; }
+  .chip.on .nm { color:#fff; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="ui">
+  <div class="top">
+    <div class="clock" id="clock">١٣:٢٨</div>
+    <div class="brand"><span class="we">WALLPAPER ENGINE</span><span class="os">EDDAH OS</span><span class="a">A</span></div>
+  </div>
+  <div class="mid">
+    <div class="idx">٠١ / ٠٥</div>
+    <div class="title">سَديم</div>
+    <div class="sub">NEBULA</div>
+    <div class="hint"><span class="dot"></span> حرّك المؤشر · انقر للنبض</div>
+    <div class="dock">
+      <div class="chip"><span class="sw" style="background:radial-gradient(circle at 50% 40%, #2a2150, #0c0820)"></span><span class="nm">شبكة</span></div>
+      <div class="chip"><span class="sw" style="background:radial-gradient(circle at 50% 40%, #9d6cff, #2a1466)"></span><span class="nm">نواة</span></div>
+      <div class="chip"><span class="sw" style="background:radial-gradient(circle at 50% 40%, #cdbaff, #3a2a7a)"></span><span class="nm">كوكبة</span></div>
+      <div class="chip"><span class="sw" style="background:radial-gradient(circle at 70% 30%, #7c4dff, #0c0820)"></span><span class="nm">رادار</span></div>
+      <div class="chip on"><span class="sw" style="background:radial-gradient(circle at 50% 45%, #8c5cff, #150a35)"></span><span class="nm">سَديم</span></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var canvas = document.getElementById('c');
+  var ctx = canvas.getContext('2d');
+  var DPR = Math.min(2, window.devicePixelRatio || 1);
+  var W=0,H=0;
+  function resize(){ W=canvas.width=Math.round(innerWidth*DPR); H=canvas.height=Math.round(innerHeight*DPR); }
+  resize(); addEventListener('resize', resize);
+
+  // pointer (eased toward target)
+  var px=innerWidth*0.5, py=innerHeight*0.46, tx=px, ty=py;
+  function setTarget(x,y){ tx=x; ty=y; }
+  addEventListener('mousemove', function(e){ setTarget(e.clientX, e.clientY); });
+  addEventListener('touchmove', function(e){ if(e.touches[0]) setTarget(e.touches[0].clientX, e.touches[0].clientY); }, {passive:true});
+
+  // click/tap pulses
+  var pulses=[];
+  function pulse(x,y){ pulses.push({x:x,y:y,t:0}); if(pulses.length>6) pulses.shift(); }
+  addEventListener('mousedown', function(e){ pulse(e.clientX,e.clientY); });
+  addEventListener('touchstart', function(e){ if(e.touches[0]) pulse(e.touches[0].clientX,e.touches[0].clientY); }, {passive:true});
+
+  // stars
+  var stars=[]; (function(){ for(var i=0;i<120;i++) stars.push({x:Math.random(),y:Math.random(),r:(Math.random()*1.1+0.3)*DPR,tw:Math.random()*6.28,sp:Math.random()*0.6+0.2}); })();
+
+  // drifting nebula cores (additive purple)
+  var cores=[
+    {col:'124,77,255', r:0.62, bx:0.5, by:0.45, ax:0.05, ay:0.05, sx:0.00016, sy:0.00012, px:0, py:1, peak:0.55},
+    {col:'157,108,255', r:0.42, bx:0.34, by:0.30, ax:0.06, ay:0.05, sx:0.00013, sy:0.00018, px:2, py:0.5, peak:0.45},
+    {col:'190,120,255', r:0.36, bx:0.70, by:0.62, ax:0.05, ay:0.06, sx:0.00019, sy:0.00014, px:4, py:3, peak:0.4},
+    {col:'214,93,177', r:0.30, bx:0.60, by:0.20, ax:0.05, ay:0.05, sx:0.00015, sy:0.00017, px:1, py:2, peak:0.3}
+  ];
+
+  function frame(t){
+    // base dark wash
+    var bg = ctx.createRadialGradient(W*0.5,H*0.45,0, W*0.5,H*0.5, Math.max(W,H)*0.75);
+    bg.addColorStop(0,'#221046'); bg.addColorStop(0.5,'#140a30'); bg.addColorStop(1,'#080510');
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+
+    // stars
+    for(var i=0;i<stars.length;i++){ var s=stars[i]; var a=0.35+0.45*Math.sin(t*0.001*s.sp+s.tw);
+      ctx.fillStyle='rgba(220,210,255,'+(a*0.6)+')'; ctx.beginPath(); ctx.arc(s.x*W,s.y*H,s.r,0,6.283); ctx.fill(); }
+
+    // ease pointer
+    px+=(tx-px)*0.06; py+=(ty-py)*0.06;
+    var mx=px*DPR, my=py*DPR;
+
+    ctx.globalCompositeOperation='lighter';
+    var base=Math.min(W,H);
+
+    // pointer glow (the nebula follows the cursor)
+    var pg=ctx.createRadialGradient(mx,my,0, mx,my, base*0.55);
+    pg.addColorStop(0,'rgba(150,110,255,0.45)'); pg.addColorStop(0.4,'rgba(124,77,255,0.18)'); pg.addColorStop(1,'rgba(124,77,255,0)');
+    ctx.fillStyle=pg; ctx.beginPath(); ctx.arc(mx,my,base*0.55,0,6.283); ctx.fill();
+
+    // drifting cores, gently pulled toward pointer
+    for(var c=0;c<cores.length;c++){ var o=cores[c];
+      var ox=(o.bx+Math.sin(t*o.sx+o.px)*o.ax)*W;
+      var oy=(o.by+Math.cos(t*o.sy+o.py)*o.ay)*H;
+      ox+=(mx-ox)*0.12; oy+=(my-oy)*0.12;
+      var rad=o.r*base;
+      var g=ctx.createRadialGradient(ox,oy,0, ox,oy,rad);
+      g.addColorStop(0,'rgba('+o.col+','+o.peak+')'); g.addColorStop(0.45,'rgba('+o.col+','+(o.peak*0.32)+')'); g.addColorStop(1,'rgba('+o.col+',0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ox,oy,rad,0,6.283); ctx.fill();
+    }
+
+    // click pulses (expanding rings)
+    for(var p=pulses.length-1;p>=0;p--){ var pu=pulses[p]; pu.t+=1;
+      var prog=pu.t/70; if(prog>=1){ pulses.splice(p,1); continue; }
+      var rr=prog*base*0.9; var al=(1-prog)*0.5;
+      ctx.strokeStyle='rgba(180,140,255,'+al+')'; ctx.lineWidth=2*DPR*(1-prog)+0.5;
+      ctx.beginPath(); ctx.arc(pu.x*DPR,pu.y*DPR,rr,0,6.283); ctx.stroke();
+      var pgr=ctx.createRadialGradient(pu.x*DPR,pu.y*DPR,0,pu.x*DPR,pu.y*DPR,rr);
+      pgr.addColorStop(0,'rgba(160,120,255,'+(al*0.4)+')'); pgr.addColorStop(1,'rgba(160,120,255,0)');
+      ctx.fillStyle=pgr; ctx.beginPath(); ctx.arc(pu.x*DPR,pu.y*DPR,rr,0,6.283); ctx.fill();
+    }
+
+    ctx.globalCompositeOperation='source-over';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  // live clock (arabic-indic)
+  function ar(n){ return String(n).replace(/[0-9]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[+d];}); }
+  function tick(){ var d=new Date(); document.getElementById('clock').textContent = ar(String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')); }
+  tick(); setInterval(tick,10000);
+})();
+</script>
+</body>
+</html>
