@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#050409" />
+<title>استوديو ألوان عدة — اختر النسخة</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{--orange:#F2820C}
+  html,body{min-height:100%;background:#050409;color:#efeaff;font-family:-apple-system,"SF Arabic","Segoe UI",Tahoma,sans-serif}
+  body{position:relative;overflow-x:hidden}
+  #c{position:fixed;inset:0;width:100%;height:100%;z-index:0;opacity:.55;filter:blur(60px) saturate(120%)}
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:26px 20px calc(40px + env(safe-area-inset-bottom))}
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:38px}
+  .top .we{font-size:11px;letter-spacing:3px;color:#b9aee0;opacity:.8}
+  .brand{display:flex;align-items:center;gap:9px}
+  .brand .os{font-size:15px;font-weight:800;letter-spacing:1px;color:#fff}
+  .brand .a{color:var(--orange);font-size:19px;font-weight:900;transform:scaleX(-1)}
+  .idx{font-size:13px;letter-spacing:3px;color:#a99fd0;opacity:.8}
+  h1{font-size:40px;font-weight:800;line-height:1.1;margin:10px 0 6px;color:#f4f0ff;text-shadow:0 4px 40px rgba(140,90,255,.35)}
+  .lead{font-size:15px;color:#a99fd0;margin-bottom:26px;line-height:1.7}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.grid{grid-template-columns:1fr}}
+  a.card{display:block;text-decoration:none;color:inherit;border-radius:20px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);backdrop-filter:blur(10px);
+    transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+  a.card:active{transform:scale(.98)}
+  a.card:hover{border-color:rgba(168,130,255,.6);box-shadow:0 18px 50px -20px rgba(124,77,255,.5)}
+  .thumb{height:120px;position:relative}
+  .thumb .tag{position:absolute;top:10px;inset-inline-start:10px;font-size:11px;font-weight:700;
+    padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.35);color:#fff;border:1px solid rgba(255,255,255,.2)}
+  .meta{padding:14px 16px}
+  .meta .nm{font-size:17px;font-weight:800;color:#f4f0ff}
+  .meta .ds{font-size:12.5px;color:#a99fd0;margin-top:4px;line-height:1.5}
+  .meta .go{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:#c9b6ff}
+  .foot{margin-top:30px;font-size:12px;color:#7d72a8;text-align:center;line-height:1.8}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="wrap">
+  <div class="top">
+    <span class="we">WALLPAPER ENGINE</span>
+    <div class="brand"><span class="os">EDDAH OS</span><span class="a">A</span></div>
+  </div>
+  <div class="idx">استوديو الألوان</div>
+  <h1>اختر نسخة عدة</h1>
+  <p class="lead">كل النسخ تحت بعض — افتح أي وحدة، قارن، وقول لي أيها نعتمد على الموقع الفعلي.</p>
+
+  <div class="grid">
+    <a class="card" href="/sadim-black-orange/">
+      <div class="thumb" style="background:radial-gradient(120% 90% at 75% 15%, #2a1a40 0%, #0a0712 55%, #050409 100%)">
+        <span class="tag" style="color:#f2820c">المقترح</span>
+      </div>
+      <div class="meta"><div class="nm">أسود + كلمات برتقالية</div><div class="ds">أسود يميل للأسود، لمسة بنفسجية خفيفة، والكلمات برتقالية.</div><div class="go">افتح ←</div></div>
+    </a>
+
+    <a class="card" href="/sadim-dark-orange/">
+      <div class="thumb" style="background:radial-gradient(120% 90% at 75% 15%, #5a3aa0 0%, #1a1130 55%, #0a0717 100%)"></div>
+      <div class="meta"><div class="nm">بنفسجي داكن + برتقالي</div><div class="ds">خلفية سديم بنفسجية أوضح، والكلمات برتقالية.</div><div class="go">افتح ←</div></div>
+    </a>
+
+    <a class="card" href="/sadim-dark/">
+      <div class="thumb" style="background:radial-gradient(120% 90% at 75% 15%, #8a66ff 0%, #2a1466 55%, #0e0a1f 100%)"></div>
+      <div class="meta"><div class="nm">بنفسجي داكن (كامل)</div><div class="ds">داكن وأكسنت بنفسجي — هوية سديم كاملة.</div><div class="go">افتح ←</div></div>
+    </a>
+
+    <a class="card" href="/sadim-light/">
+      <div class="thumb" style="background:radial-gradient(120% 90% at 75% 15%, #c6aeff 0%, #efe6ff 55%, #fcf8f1 100%)"></div>
+      <div class="meta"><div class="nm">فاتح + بنفسجي</div><div class="ds">عاجي فاتح وأكسنت بنفسجي ناعم.</div><div class="go">افتح ←</div></div>
+    </a>
+
+    <a class="card" href="/">
+      <div class="thumb" style="background:radial-gradient(120% 90% at 75% 15%, #ffc74d 0%, #fde7c0 55%, #fcf8f1 100%)"></div>
+      <div class="meta"><div class="nm">الأصلي (كهرماني فاتح)</div><div class="ds">الهوية الحالية: فاتح + كهرماني.</div><div class="go">افتح ←</div></div>
+    </a>
+
+    <a class="card" href="/sadim/">
+      <div class="thumb" style="background:radial-gradient(120% 90% at 50% 45%, #8c5cff 0%, #2a1466 45%, #080510 100%)">
+        <span class="tag">حركة + لمس</span>
+      </div>
+      <div class="meta"><div class="nm">شيدر سديم</div><div class="ds">الخلفية المتحركة لحالها — تتبع المؤشر وتنبض باللمس.</div><div class="go">افتح ←</div></div>
+    </a>
+  </div>
+
+  <p class="foot">عدة · استوديو الألوان<br>النسخة الأصلية والروابط محفوظة على GitHub Pages</p>
+</div>
+<script>
+(function(){
+  var cv=document.getElementById('c'),x=cv.getContext('2d'),DPR=Math.min(2,devicePixelRatio||1),W,H;
+  function rs(){W=cv.width=Math.round(innerWidth*DPR*0.4);H=cv.height=Math.round(innerHeight*DPR*0.4);}
+  rs();addEventListener('resize',rs);
+  var cores=[{c:'124,77,255',r:.6,bx:.78,by:.12,ax:.05,ay:.06,sx:.00017,sy:.00013,px:0,py:1},
+             {c:'157,108,255',r:.42,bx:.2,by:.7,ax:.06,ay:.05,sx:.00014,sy:.00019,px:2,py:.5},
+             {c:'190,120,255',r:.36,bx:.6,by:.4,ax:.05,ay:.06,sx:.0002,sy:.00015,px:4,py:3}];
+  function f(t){x.clearRect(0,0,W,H);x.globalCompositeOperation='lighter';var b=Math.min(W,H);
+    for(var i=0;i<cores.length;i++){var o=cores[i];var px=(o.bx+Math.sin(t*o.sx+o.px)*o.ax)*W,py=(o.by+Math.cos(t*o.sy+o.py)*o.ay)*H,rd=o.r*b;
+      var g=x.createRadialGradient(px,py,0,px,py,rd);g.addColorStop(0,'rgba('+o.c+',0.5)');g.addColorStop(1,'rgba('+o.c+',0)');
+      x.fillStyle=g;x.beginPath();x.arc(px,py,rd,0,6.283);x.fill();}
+    x.globalCompositeOperation='source-over';requestAnimationFrame(f);}
+  requestAnimationFrame(f);
+})();
+</script>
+</body>
+</html>
