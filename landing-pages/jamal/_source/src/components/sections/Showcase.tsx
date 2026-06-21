@@ -45,32 +45,25 @@ export default function Showcase() {
             reduce: boolean;
           };
 
-          if (isDesktop && !reduce) {
-            ScrollTrigger.create({
-              trigger: section,
-              start: 'top top',
-              end: 'bottom bottom',
-              pin: col,
-              pinSpacing: false,
-              invalidateOnRefresh: true,
-            });
-
-            if (detail.current) {
-              gsap.fromTo(
-                detail.current,
-                { yPercent: 12 },
-                {
-                  yPercent: -12,
-                  ease: 'none',
-                  scrollTrigger: {
-                    trigger: section,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 1,
-                  },
+          // The image column holds via CSS `position: sticky` (see markup) — far
+          // more robust than a GSAP pin with pinSpacing:false, which reserved no
+          // space and let earlier pinned sections bleed through this section's
+          // transparent column. Here we only add the detail-plate parallax.
+          if (isDesktop && !reduce && detail.current) {
+            gsap.fromTo(
+              detail.current,
+              { yPercent: 12 },
+              {
+                yPercent: -12,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: section,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1,
                 },
-              );
-            }
+              },
+            );
           }
 
           if (reduce) {
@@ -106,10 +99,10 @@ export default function Showcase() {
     <section
       id="collection"
       ref={root}
-      className="relative grid md:grid-cols-2"
+      className="relative grid bg-ink md:grid-cols-2"
     >
       {/* Pinned image column */}
-      <div ref={imageCol} className="relative h-[60vh] bg-surface md:h-screen">
+      <div ref={imageCol} className="relative h-[60vh] bg-surface md:sticky md:top-0 md:h-screen md:self-start">
         <div className="relative h-full w-full overflow-hidden">
           <img
             src={asset('/assets/product-front.webp')}
@@ -142,7 +135,7 @@ export default function Showcase() {
 
       {/* Scrolling copy column — taller than the viewport so the pinned image
           column has real travel to scroll past on desktop. */}
-      <div className="showcase-copy flex flex-col justify-center gap-8 px-6 py-20 motion-safe:md:min-h-[160vh] md:px-12 md:py-40 lg:px-16">
+      <div className="showcase-copy flex flex-col justify-center gap-8 px-6 py-20 md:min-h-[130vh] md:px-12 md:py-40 lg:px-16">
         <div className="flex items-center gap-4" data-show>
           <span className="kicker">02 — The Collection</span>
           <span className="h-px flex-1 bg-line" />

@@ -3,6 +3,20 @@
 Update after EVERY iteration. This file is the source of truth that survives
 `/compact`. Before compacting context, write your full current state here first.
 
+## Status: LIVE on GitHub Pages — re-themed to the REAL oxblood/burgundy brand identity
+
+### Brand re-theme (2026-06-22, from the official brand image the user supplied)
+Real identity = deep wine linen + cream serif wordmark (NOT the old gold placeholder).
+Instagram: instagram.com/jamal.atelier. New palette (mirrored in `src/index.css` :root +
+`tailwind.config.js`; verified zero old colors leak into the built CSS):
+`--ink #1a0b10` · `--surface #2a1620` · `--line #422835` · `--cream #f3ece5` ·
+`--muted #a98a90` (dusty mauve) · `--accent #c97f86` (antique rose, single accent,
+light enough for kicker text) · `--accent-soft #dda3a8` · `--wine #4a1f2a`.
+Also: faint fixed oxblood body wash + wine hero-vignette glow; wordmark now cream
+(Nav + Footer); favicon → burgundy field + cream "J"; theme-color #1A0B10. DESIGN_TOKENS.md
+updated. Hero verified visually (rose accents + burgundy frame); deeper sections verified
+via clean built CSS (Tailwind config changes need a dev-server restart to show in preview).
+
 ## Status: LIVE on GitHub Pages (akoz20100-blip.github.io/landing-pages/jamal/) — gallery black-fix shipped
 
 ### Desktop gallery black-fix (user-reported on live site)
