@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="12" fill="#0A0A0A"/>
+  <rect width="64" height="64" rx="12" fill="#1A0B10"/>
   <text x="32" y="45" text-anchor="middle"
     font-family="Didot, 'Bodoni 72', 'Bodoni MT', 'Times New Roman', serif"
-    font-size="42" font-weight="400" letter-spacing="1" fill="#C09A62">J</text>
+    font-size="42" font-weight="400" letter-spacing="1" fill="#F3ECE5">J</text>
 </svg>
