@@ -6,6 +6,7 @@ import { IS_FLAT } from './lib/flags';
 import { lenisStore } from './lib/lenisStore';
 import { prefersReducedMotion } from './lib/motion';
 import { useReveal } from './hooks/useReveal';
+import { useLang } from './lib/i18n';
 import Preloader from './components/Preloader';
 import CustomCursor from './components/CustomCursor';
 import Nav from './components/Nav';
@@ -21,6 +22,20 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const scope = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
+  const lang = useLang();
+
+  // Drive <html lang/dir> from the language store, and recalc all pin geometry
+  // once the new (RTL/Arabic) layout settles — section heights + the gallery
+  // track width can change with the script.
+  useEffect(() => {
+    const html = document.documentElement;
+    html.lang = lang;
+    html.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    const raf = requestAnimationFrame(() =>
+      requestAnimationFrame(() => ScrollTrigger.refresh()),
+    );
+    return () => cancelAnimationFrame(raf);
+  }, [lang]);
 
   // Boot the smooth-scroll backbone once. Hold scroll while the preloader runs.
   // Skip it for reduced-motion (WCAG 2.3.3 — no animated scroll interpolation)
@@ -69,9 +84,9 @@ export default function App() {
       {/* WCAG 2.4.1 — bypass the fixed nav / hero straight to the content. */}
       <a
         href="#main-content"
-        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[200] focus-visible:bg-ink focus-visible:px-4 focus-visible:py-2 focus-visible:text-sm focus-visible:font-semibold focus-visible:tracking-wide focus-visible:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+        className="sr-only focus-visible:not-sr-only focus-visible:fixed focus-visible:left-4 focus-visible:top-4 focus-visible:z-[200] focus-visible:bg-ink focus-visible:px-4 focus-visible:py-2 focus-visible:text-sm focus-visible:font-semibold focus-visible:tracking-wide focus-visible:text-cream focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent rtl:focus-visible:left-auto rtl:focus-visible:right-4"
       >
-        Skip to content
+        {lang === 'ar' ? 'تخطٍّ إلى المحتوى' : 'Skip to content'}
       </a>
       {!loaded && <Preloader onComplete={() => setLoaded(true)} />}
       <div

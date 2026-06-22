@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { scrollToHash, lenisStore } from '../../lib/lenisStore';
 import { asset } from '../../lib/asset';
+import { useContent } from '../../lib/content';
 import Magnetic from '../Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,10 +18,11 @@ interface Shot {
   h: number;
 }
 
-// Source frames are 1200x2133 (portrait); editorial-02 is the wide crop.
+// Source frames are 1200x2133 (portrait).
 const PORTRAIT = { w: 1200, h: 2133 };
-const WIDE = { w: 2133, h: 1200 };
 
+// Every figure is the SAME portrait aspect + width so the lookbook reads as one
+// consistent rhythm (no odd landscape crop breaking the row).
 const SHOTS: Shot[] = [
   { src: asset('/assets/gallery/01.webp'), caption: 'At rest', ...PORTRAIT },
   { src: asset('/assets/gallery/02.webp'), caption: 'Doorway', ...PORTRAIT },
@@ -30,7 +32,6 @@ const SHOTS: Shot[] = [
     caption: 'The set — front',
     ...PORTRAIT,
   },
-  { src: asset('/assets/editorial-02.webp'), caption: 'Off the green', wide: true, ...WIDE },
   { src: asset('/assets/gallery/03.webp'), caption: 'Evening', ...PORTRAIT },
   { src: asset('/assets/gallery/04.webp'), caption: 'Collar study', ...PORTRAIT },
   {
@@ -51,6 +52,7 @@ export default function Gallery() {
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
   const progress = useRef<HTMLSpanElement>(null);
+  const c = useContent();
 
   // WCAG 2.1.1 — the lookbook is a focusable region; arrow keys must move it.
   // When the desktop pin is engaged, horizontal browsing maps to PAGE scroll,
@@ -161,15 +163,15 @@ export default function Gallery() {
   return (
     <section id="gallery" ref={root} className="section-frame relative bg-ink py-16 md:py-0">
       <div className="pointer-events-none absolute left-0 top-0 z-10 flex w-full items-center gap-4 px-6 pt-8 md:px-10 md:pt-24">
-        <span className="kicker">04 — Gallery</span>
+        <span className="kicker">{c.gallery.index}</span>
         <span className="hidden h-px flex-1 bg-line md:block" />
-        <span className="kicker hidden text-muted md:block">Scroll to explore</span>
+        <span className="kicker hidden text-muted md:block">{c.gallery.explore}</span>
       </div>
 
       <div
         ref={viewport}
         role="region"
-        aria-label="Lookbook — use arrow keys or scroll to browse"
+        aria-label={c.gallery.regionAria}
         tabIndex={0}
         onKeyDown={handleKeyDown}
         data-cursor="view"
@@ -178,15 +180,15 @@ export default function Gallery() {
         <div ref={track} className="gallery-track flex shrink-0 items-center gap-5 md:gap-8">
           {/* Intro panel */}
           <div className="luxury-panel flex h-[64vh] w-[74vw] shrink-0 snap-start flex-col justify-between p-5 sm:w-[42vw] md:h-[84vh] md:w-[28vw] md:p-7">
-            <span className="kicker text-muted">04 — Gallery</span>
+            <span className="kicker text-muted">{c.gallery.index}</span>
             <div>
-            <h2 className="font-display text-[clamp(2.8rem,6vw,5.5rem)] font-normal leading-[0.84] tracking-tight text-cream">
-              The
+            <h2 className="font-display text-[var(--text-h1)] font-normal leading-[0.84] tracking-tight text-cream">
+              {c.gallery.title1}
               <br />
-              lookbook
+              {c.gallery.title2}
             </h2>
             <p className="mt-4 max-w-[22ch] text-sm leading-relaxed text-muted">
-              One set, many lives. Shot in warm light and worn the way it should be.
+              {c.gallery.intro}
             </p>
             </div>
           </div>
@@ -194,11 +196,7 @@ export default function Gallery() {
           {SHOTS.map((shot, i) => (
             <figure
               key={shot.src}
-              className={`gallery-figure group image-shell relative h-[64vh] shrink-0 snap-start overflow-hidden border border-line bg-surface md:h-[84vh] ${
-                shot.wide
-                  ? 'w-[88vw] sm:w-[70vw] md:w-[48vw]'
-                  : 'w-[70vw] sm:w-[44vw] md:w-[27vw]'
-              }`}
+              className="gallery-figure group image-shell relative h-[64vh] w-[70vw] shrink-0 snap-start overflow-hidden border border-line bg-surface sm:w-[44vw] md:h-[84vh] md:w-[27vw]"
             >
               {/* Inner wrapper carries the pointer-reactive hover scale so it
                   composes with — never overwrites — the gsap-driven img transform
@@ -206,7 +204,7 @@ export default function Gallery() {
               <div className="relative h-full w-full transition-transform duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.06]">
                 <img
                   src={shot.src}
-                  alt={`JAMAL linen — ${shot.caption}`}
+                  alt={`JAMAL — ${c.gallery.captions[i]}`}
                   width={shot.w}
                   height={shot.h}
                   loading={i === 0 ? 'eager' : 'lazy'}
@@ -228,9 +226,9 @@ export default function Gallery() {
               </div>
               <figcaption className="pointer-events-none absolute bottom-0 left-0 z-[1] flex w-full items-center justify-between bg-gradient-to-t from-ink via-ink/70 to-transparent px-4 pb-4 pt-10">
                 <span className="text-sm text-cream transition duration-[600ms] ease-[cubic-bezier(0.16,1,0.3,1)] translate-y-2 opacity-70 group-hover:translate-y-0 group-hover:opacity-100">
-                  {shot.caption}
+                  {c.gallery.captions[i]}
                 </span>
-                <span className="kicker text-accent opacity-100">
+                <span className="num-ltr kicker text-accent opacity-100">
                   {String(i + 1).padStart(2, '0')}
                 </span>
               </figcaption>
@@ -239,8 +237,8 @@ export default function Gallery() {
 
           {/* Outro CTA panel */}
           <div className="luxury-panel flex h-[64vh] w-[70vw] shrink-0 snap-start flex-col justify-center gap-5 p-5 pr-6 sm:w-[40vw] md:h-[84vh] md:w-[26vw] md:p-7">
-            <p className="font-display text-[clamp(2.2rem,4vw,3.8rem)] font-normal leading-[0.9] tracking-tight text-cream">
-              Make it yours.
+            <p className="font-display text-[var(--text-h2)] font-normal leading-[0.9] tracking-tight text-cream">
+              {c.gallery.outro}
             </p>
             <Magnetic className="self-start">
               <a
@@ -251,9 +249,9 @@ export default function Gallery() {
                 data-cursor="link"
                 className="btn"
               >
-                Enquire
+                {c.gallery.enquire}
                 <span className="btn__arrow" aria-hidden>
-                  →
+                  {'→'}
                 </span>
               </a>
             </Magnetic>
@@ -265,7 +263,7 @@ export default function Gallery() {
       <div className="absolute bottom-8 left-10 right-10 hidden h-px bg-line md:block">
         <span
           ref={progress}
-          className="block h-full origin-left scale-x-0 bg-accent"
+          className="gallery-progress block h-full origin-left scale-x-0 bg-accent"
         />
       </div>
     </section>

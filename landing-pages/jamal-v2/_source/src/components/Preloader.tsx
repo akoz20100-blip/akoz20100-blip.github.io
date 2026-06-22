@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { prefersReducedMotion } from '../lib/motion';
+import { useContent } from '../lib/content';
 import Logo from './Logo';
 
 interface PreloaderProps {
@@ -15,6 +16,7 @@ interface PreloaderProps {
 export default function Preloader({ onComplete }: PreloaderProps) {
   const root = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(0);
+  const c = useContent();
 
   useLayoutEffect(() => {
     // Reduced motion: no counter, no curtain — show the mark briefly, reveal.
@@ -128,10 +130,10 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           {count}
           <span className="ml-1 align-top font-body text-xl text-muted md:text-2xl">%</span>
         </span>
-        <span className="kicker hidden text-muted md:block">Linen Atelier</span>
+        <span className="kicker hidden text-muted md:block">{c.hero.kicker}</span>
         <div className="mb-3 w-full max-w-xs justify-self-end">
           <div className="preloader__bar h-px w-full origin-left scale-x-0 bg-accent" />
-          <span className="kicker mt-3 block text-right text-muted">Loading the atelier</span>
+          <span className="kicker mt-3 block text-right text-muted">{c.loadingLabel}</span>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import { gsap } from 'gsap';
 import ScrollVideo from '../ScrollVideo';
 import { MEDIA } from '../../lib/motion';
 import { asset } from '../../lib/asset';
+import { useContent } from '../../lib/content';
 
 /**
  * HERO — the 360 rotating linen set.
@@ -13,6 +14,7 @@ import { asset } from '../../lib/asset';
 export default function Hero() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<((p: number) => void) | null>(null);
+  const c = useContent();
 
   useLayoutEffect(() => {
     const overlay = overlayRef.current;
@@ -81,7 +83,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section id="hero" aria-label="JAMAL — the linen set, rotating">
+    <section id="hero" aria-label={c.hero.sectionAria}>
       <ScrollVideo
         src={asset('/assets/model-360.mp4')}
         poster={asset('/assets/model-360-poster.jpg')}
@@ -108,8 +110,8 @@ export default function Hero() {
           />
 
           <div className="hero-top flex items-start justify-between pt-14 md:pt-20">
-            <span className="kicker overflow-hidden">Linen Atelier</span>
-            <span className="kicker overflow-hidden text-right text-muted">Vol. 01 — Est. 2026</span>
+            <span className="kicker overflow-hidden">{c.hero.kicker}</span>
+            <span className="kicker overflow-hidden text-right text-muted">{c.hero.vol}</span>
           </div>
 
           <div className="hero-rule absolute left-6 right-6 top-[7rem] h-px origin-left bg-line md:left-10 md:right-10 md:top-[8.75rem]" />
@@ -118,30 +120,31 @@ export default function Hero() {
             <h1
               id="hero-heading"
               tabIndex={-1}
-              className="max-w-[10ch] font-display text-[clamp(4rem,14vw,11rem)] font-normal leading-[0.78] tracking-tight text-cream"
+              className="max-w-[10ch] font-display text-[var(--text-hero)] font-normal leading-[0.78] tracking-tight text-cream"
             >
               <span className="block overflow-hidden">
                 <span className="hero-line block">
-                  One garment.
+                  {c.hero.line1}
                 </span>
               </span>
               <span className="block overflow-hidden">
-                <span className="hero-line block pl-[0.22em]">
-                  Every angle<span className="text-accent">.</span>
+                <span className="hero-line hero-line-indent block pl-[0.22em]">
+                  {c.hero.line2}
+                  <span className="text-accent">{c.hero.line2Accent}</span>
                 </span>
               </span>
             </h1>
 
             <div className="hidden w-[18rem] flex-col items-end gap-4 md:flex">
               <div className="hero-chip luxury-panel px-5 py-4 text-right">
-                <span className="kicker text-muted">The piece</span>
+                <span className="kicker text-muted">{c.hero.chipKicker}</span>
                 <p className="mt-2 text-sm leading-relaxed text-cream">
-                  Garment-washed European linen · 360° in the light.
+                  {c.hero.chipBody}
                 </p>
               </div>
               <div className="hero-cue flex shrink-0 items-center gap-4 pb-1">
               <span className="kicker [writing-mode:vertical-rl] text-muted">
-                Scroll to rotate
+                {c.hero.cue}
               </span>
               <span className="relative block h-16 w-px overflow-hidden bg-line">
                 <span className="hero-cue__dot absolute left-0 top-0 h-6 w-px bg-accent" />

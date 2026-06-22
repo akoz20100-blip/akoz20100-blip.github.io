@@ -90,12 +90,68 @@ export default function ScrollVideo({
           },
         });
 
-        // Metadata doesn't change the spacer; just recalc once to be safe.
-        const onMeta = () => ScrollTrigger.refresh();
+        // Paint the FRONT of the garment on load. Frame 0 of the clip faces the
+        // camera, so a tiny seek decodes a front frame (the poster is a front
+        // frame too) — the page no longer opens on the model's back.
+        const showFront = () => {
+          try {
+            if (video.currentTime < 0.001) video.currentTime = 0.04;
+          } catch {
+            /* metadata not ready — poster (front) covers it */
+          }
+        };
+        const onMeta = () => {
+          showFront();
+          ScrollTrigger.refresh();
+        };
         if (video.readyState < 1) {
           video.addEventListener('loadedmetadata', onMeta, { once: true });
           return () => video.removeEventListener('loadedmetadata', onMeta);
         }
+        showFront();
+      });
+
+      // Hover (desktop) / press-and-hold (touch) to zoom INTO the weave so the
+      // linen texture reads up close. Transform-only (compositor-safe); origin
+      // sits on the torso. Skipped under reduced motion (separate matchMedia).
+      mm.add(MEDIA.motionOk, () => {
+        gsap.set(video, { transformOrigin: '50% 38%' });
+        const zoomTo = (s: number) =>
+          gsap.to(video, {
+            scale: s,
+            duration: 0.6,
+            ease: 'power3.out',
+            overwrite: true,
+            onStart: () => {
+              video.style.willChange = 'transform';
+            },
+            onComplete: () => {
+              if (s === 1) video.style.willChange = '';
+            },
+          });
+        const zoomIn = () => zoomTo(1.34);
+        const zoomOut = () => zoomTo(1);
+        const hoverable = window.matchMedia('(hover: hover)').matches;
+
+        if (hoverable) {
+          wrap.addEventListener('pointerenter', zoomIn);
+          wrap.addEventListener('pointerleave', zoomOut);
+        } else {
+          // Press to inspect; a scroll/drag fires pointercancel → releases zoom.
+          wrap.addEventListener('pointerdown', zoomIn);
+          wrap.addEventListener('pointerup', zoomOut);
+          wrap.addEventListener('pointercancel', zoomOut);
+          wrap.addEventListener('pointerleave', zoomOut);
+        }
+
+        return () => {
+          wrap.removeEventListener('pointerenter', zoomIn);
+          wrap.removeEventListener('pointerleave', zoomOut);
+          wrap.removeEventListener('pointerdown', zoomIn);
+          wrap.removeEventListener('pointerup', zoomOut);
+          wrap.removeEventListener('pointercancel', zoomOut);
+          gsap.set(video, { scale: 1, clearProps: 'will-change' });
+        };
       });
 
       // Reduced motion: hold the front frame, no pin, no scrub.

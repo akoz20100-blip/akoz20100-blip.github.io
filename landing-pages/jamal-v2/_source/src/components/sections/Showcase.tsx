@@ -4,6 +4,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { scrollToHash } from '../../lib/lenisStore';
 import { asset } from '../../lib/asset';
+import { useContent } from '../../lib/content';
 import Magnetic from '../Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -11,13 +12,6 @@ gsap.registerPlugin(ScrollTrigger);
 function onAnchorClick(e: MouseEvent<HTMLAnchorElement>, href: string) {
   if (scrollToHash(href)) e.preventDefault();
 }
-
-const SPECS = [
-  { label: 'Fabric', value: '100% European linen' },
-  { label: 'Finish', value: 'Garment-washed, hand-pressed' },
-  { label: 'Collar', value: 'Grandad / band' },
-  { label: 'Fit', value: 'Relaxed, drawstring trouser' },
-];
 
 /**
  * SHOWCASE — the single product. On desktop the image column pins while the copy
@@ -28,6 +22,7 @@ export default function Showcase() {
   const root = useRef<HTMLDivElement>(null);
   const imageCol = useRef<HTMLDivElement>(null);
   const detail = useRef<HTMLImageElement>(null);
+  const c = useContent();
 
   useLayoutEffect(() => {
     const section = root.current;
@@ -145,7 +140,7 @@ export default function Showcase() {
         />
 
         <span className="kicker absolute left-6 top-6 z-[3] [text-shadow:0_1px_10px_rgba(26,11,16,0.7)] md:left-10 md:top-10">
-          The piece
+          {c.showcase.piece}
         </span>
       </div>
 
@@ -153,28 +148,26 @@ export default function Showcase() {
           column has real travel to scroll past on desktop. */}
       <div className="showcase-copy flex flex-col justify-center gap-8 px-6 py-24 md:min-h-[135vh] md:px-12 md:py-40 lg:px-16">
         <div className="flex items-center gap-4" data-show>
-          <span className="kicker">02 — The Collection</span>
+          <span className="kicker">{c.showcase.index}</span>
           <span className="h-px flex-1 bg-line" />
         </div>
 
         <h2
           data-show
-          className="max-w-[7ch] font-display text-[clamp(3rem,7vw,6rem)] font-normal leading-[0.86] tracking-tight text-cream"
+          className="max-w-[7ch] font-display text-[var(--text-h1)] font-normal leading-[0.86] tracking-tight text-cream"
         >
-          The Atelier Set
+          {c.showcase.title}
         </h2>
 
         <p data-show className="measure text-[var(--text-lead)] leading-relaxed text-muted">
-          One quietly complete outfit. A grandad-collar shirt that softens with
-          every wash, worn with a relaxed drawstring trouser — both cut from the
-          same garment-washed European linen, in a single warm neutral.
+          {c.showcase.lead}
         </p>
 
         <dl
           data-show
           className="grid max-w-xl grid-cols-1 gap-px overflow-hidden border border-line bg-line sm:grid-cols-2"
         >
-          {SPECS.map((spec) => (
+          {c.showcase.specs.map((spec) => (
             <div key={spec.label} className="bg-ink/95 px-5 py-5">
               <dt className="kicker text-muted">{spec.label}</dt>
               <dd className="mt-1.5 text-sm text-cream">{spec.value}</dd>
@@ -183,7 +176,7 @@ export default function Showcase() {
         </dl>
 
         <div data-show className="flex flex-wrap items-center gap-6 pt-2">
-          <span className="font-display text-2xl text-accent">From €280</span>
+          <span className="num-ltr font-display text-2xl text-accent">{c.showcase.price}</span>
           <Magnetic>
             <a
               href="#contact"
@@ -191,9 +184,9 @@ export default function Showcase() {
               data-cursor="link"
               className="btn"
             >
-              Enquire
+              {c.showcase.enquire}
               <span className="btn__arrow" aria-hidden>
-                →
+                {'→'}
               </span>
             </a>
           </Magnetic>

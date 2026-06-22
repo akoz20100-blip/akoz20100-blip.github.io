@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 import { MEDIA } from '../../lib/motion';
 import { asset } from '../../lib/asset';
+import { useContent } from '../../lib/content';
+import { useLang } from '../../lib/i18n';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,6 +17,8 @@ gsap.registerPlugin(ScrollTrigger);
 export default function Manifesto() {
   const root = useRef<HTMLDivElement>(null);
   const statementRef = useRef<HTMLHeadingElement>(null);
+  const c = useContent();
+  const lang = useLang();
 
   useLayoutEffect(() => {
     const root_ = root.current;
@@ -51,7 +55,8 @@ export default function Manifesto() {
     }, root_);
 
     return () => ctx.revert();
-  }, []);
+    // Re-split + re-reveal when the language (and therefore the statement) changes.
+  }, [lang]);
 
   return (
     <section
@@ -60,7 +65,7 @@ export default function Manifesto() {
       aria-labelledby="manifesto-heading"
       className="section-frame relative px-6 py-[var(--section-y)] md:px-10"
     >
-      <div className="pointer-events-none absolute right-[var(--gutter)] top-20 hidden font-display text-[18vw] leading-none text-surface/60 md:block">
+      <div className="num-ltr pointer-events-none absolute right-[var(--gutter)] top-20 hidden font-display text-[18vw] leading-none text-surface/60 md:block">
         01
       </div>
 
@@ -68,12 +73,12 @@ export default function Manifesto() {
         <div className="flex flex-col justify-between gap-10">
           <div className="flex items-center gap-4 md:flex-col md:items-start">
             <span className="kicker" data-reveal-soft>
-              01 — Manifesto
+              {c.manifesto.index}
             </span>
             <span className="h-px flex-1 bg-line md:h-24 md:w-px md:flex-none" data-reveal-soft />
           </div>
           <p className="hidden max-w-[18rem] text-sm leading-relaxed text-muted md:block" data-reveal-soft>
-            The brief
+            {c.manifesto.brief}
           </p>
         </div>
 
@@ -81,17 +86,16 @@ export default function Manifesto() {
           <h2
             id="manifesto-heading"
             ref={statementRef}
-            className="font-display text-[clamp(2.4rem,7vw,6.2rem)] font-normal leading-[0.96] tracking-tight text-cream"
+            className="font-display text-[var(--text-h1)] font-normal leading-[0.96] tracking-tight text-cream"
           >
-            We make one thing, and we make it completely — a single linen set, cut for
-            ease and finished by hand. No seasons, no noise. Just cloth that breathes,
-            softens with wear, and is meant to be{' '}
-            <span className="text-accent">lived in</span>.
+            {c.manifesto.statementPre}
+            <span className="text-accent">{c.manifesto.statementAccent}</span>
+            {c.manifesto.statementPost}
           </h2>
 
           <div className="mt-12 grid gap-6 border-t border-line pt-8 md:grid-cols-[0.58fr_1fr] md:gap-12">
             <p className="kicker text-muted md:hidden" data-reveal-soft>
-              The brief
+              {c.manifesto.brief}
             </p>
             <figure className="luxury-panel hidden overflow-hidden md:block" data-reveal-soft>
               <img
@@ -104,17 +108,14 @@ export default function Manifesto() {
                 className="image-shell h-36 w-full object-cover object-center"
               />
               <figcaption className="kicker px-4 py-3 text-muted">
-                European linen · garment-washed
+                {c.manifesto.figCaption}
               </figcaption>
             </figure>
             <p
               className="measure text-[var(--text-lead)] leading-relaxed text-muted"
               data-reveal-soft
             >
-              Garment-washed European linen, a grandad-collar shirt and a relaxed
-              trouser, drawn in one neutral. Considered from every angle — which is why
-              you can turn it in the light above, and why nothing here is left to
-              chance.
+              {c.manifesto.lead}
             </p>
           </div>
         </div>

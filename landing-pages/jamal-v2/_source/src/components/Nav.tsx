@@ -1,14 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import type { MouseEvent } from 'react';
 import Logo from './Logo';
+import LangToggle from './LangToggle';
 import { lenisStore, scrollToHash } from '../lib/lenisStore';
-
-const LINKS = [
-  { label: 'Collection', href: '#collection' },
-  { label: 'Atelier', href: '#atelier' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' },
-];
+import { useContent } from '../lib/content';
 
 /**
  * Fixed nav. A faint top scrim (not mix-blend) keeps the marks legible over any
@@ -22,6 +17,8 @@ export default function Nav() {
   const drawerRef = useRef<HTMLDivElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
   const prevOpen = useRef(false);
+  const c = useContent();
+  const LINKS = c.nav.items;
 
   // Scroll-lock, inert toggling, and focus management on open/close.
   useEffect(() => {
@@ -98,42 +95,46 @@ export default function Nav() {
         <a
           href="#hero"
           onClick={(e) => go(e, '#hero')}
-          aria-label="JAMAL — Linen Atelier, back to top"
+          aria-label={c.nav.toAria}
           data-cursor="link"
           className="pointer-events-auto relative z-50 block text-cream transition-opacity duration-200 hover:opacity-70"
         >
           <Logo className="h-6 w-auto md:h-7" />
         </a>
 
-        {/* Desktop links */}
-        <nav
-          aria-label="Primary"
-          className="pointer-events-auto hidden items-center gap-2 border border-line/80 bg-ink/50 px-2 py-1 backdrop-blur-xl md:flex"
-        >
-          {LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => go(e, link.href)}
-              data-cursor="link"
-              className="inline-flex min-h-[40px] items-center px-4 py-2 font-body text-sm text-cream transition-colors duration-200 hover:bg-surface hover:text-accent focus-visible:bg-surface focus-visible:text-accent"
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
+        {/* Right cluster: language toggle (always visible), desktop links, mobile toggle */}
+        <div className="flex items-center gap-2 md:gap-3">
+          <LangToggle />
 
-        {/* Mobile toggle (44px target) */}
-        <button
-          ref={toggleRef}
-          type="button"
-          onClick={() => setOpen((o) => !o)}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          data-cursor="link"
-          className="pointer-events-auto relative z-50 -mr-2 flex h-11 w-11 items-center justify-center border border-line bg-ink/50 text-cream backdrop-blur md:hidden"
-        >
-          <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+          {/* Desktop links */}
+          <nav
+            aria-label={c.nav.primary}
+            className="pointer-events-auto hidden items-center gap-1 border border-line/80 bg-ink/50 px-2 py-1 backdrop-blur-xl md:flex"
+          >
+            {LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => go(e, link.href)}
+                data-cursor="link"
+                className="inline-flex min-h-[40px] items-center px-4 py-2 font-body text-sm text-cream transition-colors duration-200 hover:bg-surface hover:text-accent focus-visible:bg-surface focus-visible:text-accent"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Mobile toggle (44px target) */}
+          <button
+            ref={toggleRef}
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            data-cursor="link"
+            className="pointer-events-auto relative z-50 flex h-11 w-11 items-center justify-center border border-line bg-ink/50 text-cream backdrop-blur md:hidden"
+          >
+            <span className="sr-only">{open ? c.nav.close : c.nav.open}</span>
           <span className="relative block h-3 w-6" aria-hidden>
             <span
               className={`absolute left-0 top-0 h-px w-full bg-current transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
@@ -146,7 +147,8 @@ export default function Nav() {
               }`}
             />
           </span>
-        </button>
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer (modal) */}
@@ -155,13 +157,13 @@ export default function Nav() {
         ref={drawerRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Menu"
+        aria-label={c.nav.primary}
         aria-hidden={!open}
         className={`fixed inset-0 z-40 flex flex-col bg-ink/95 px-6 pb-10 pt-28 backdrop-blur-sm transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
           open ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
         }`}
       >
-        <nav aria-label="Mobile" className="flex flex-col">
+        <nav aria-label={c.nav.mobile} className="flex flex-col">
           {LINKS.map((link, i) => (
             <a
               key={link.href}
@@ -175,7 +177,9 @@ export default function Nav() {
             </a>
           ))}
         </nav>
-        <span className="kicker mt-auto pt-10 text-muted">JAMAL — Linen Atelier · Lisbon</span>
+        <span className="kicker mt-auto pt-10 text-muted">
+          <span className="font-serif">JAMAL</span> — {c.nav.tagline}
+        </span>
       </div>
     </header>
   );

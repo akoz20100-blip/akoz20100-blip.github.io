@@ -2,16 +2,9 @@ import { useLayoutEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MEDIA } from '../lib/motion';
+import { useContent } from '../lib/content';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const WORDS = [
-  'Garment-washed linen',
-  'Made by hand',
-  'One considered set',
-  'Lisbon',
-  'Est. 2026',
-];
 
 /**
  * Editorial running band. Loops infinitely and reacts to scroll velocity —
@@ -21,6 +14,7 @@ const WORDS = [
 export default function Marquee() {
   const root = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
+  const WORDS = useContent().marquee;
 
   useLayoutEffect(() => {
     const section = root.current;
@@ -71,7 +65,7 @@ export default function Marquee() {
     <div className="flex shrink-0 items-center">
       {WORDS.map((w) => (
         <span key={w} className="flex shrink-0 items-center">
-          <span className="px-[0.4em] font-display text-[clamp(2rem,6vw,5.5rem)] font-normal tracking-tight text-cream">
+          <span className="px-[0.4em] font-display text-[var(--text-h1)] font-normal tracking-tight text-cream">
             {w}
           </span>
           <span className="px-[0.4em] text-[clamp(1rem,2vw,2rem)] text-accent">&#9702;</span>

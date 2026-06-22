@@ -3,15 +3,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MEDIA } from '../../lib/motion';
 import { asset } from '../../lib/asset';
+import { useContent } from '../../lib/content';
 
 gsap.registerPlugin(ScrollTrigger);
-
-const NOTES = [
-  'Coconut buttons, sewn by hand',
-  'Side seams felled for softness',
-  'Pre-washed so it never shrinks on you',
-  'One neutral, dyed in small batches',
-];
 
 /**
  * DETAILS — a cinematic full-bleed band (parallax) plus a craft note column.
@@ -20,6 +14,7 @@ const NOTES = [
 export default function Details() {
   const root = useRef<HTMLDivElement>(null);
   const bandImg = useRef<HTMLImageElement>(null);
+  const c = useContent();
 
   useLayoutEffect(() => {
     const section = root.current;
@@ -81,9 +76,9 @@ export default function Details() {
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-transparent" />
         <div className="absolute inset-x-[var(--gutter)] top-10 h-px bg-line/80" aria-hidden />
         <figcaption className="absolute bottom-0 left-0 grid w-full gap-8 p-6 md:grid-cols-[0.6fr_1fr] md:p-10">
-          <span className="kicker self-end">03 — In wear</span>
-          <p className="max-w-3xl justify-self-end font-display text-[clamp(2.4rem,6vw,5.8rem)] font-normal leading-[0.9] tracking-tight text-cream md:text-right">
-            Cut for ease. Worn in company.
+          <span className="kicker self-end">{c.details.index}</span>
+          <p className="max-w-3xl justify-self-end font-display text-[var(--text-h1)] font-normal leading-[0.9] tracking-tight text-cream md:text-right rtl:md:text-left">
+            {c.details.band}
           </p>
         </figcaption>
       </figure>
@@ -104,22 +99,22 @@ export default function Details() {
 
         <div className="details-notes flex flex-col justify-center">
           <span className="kicker" data-note>
-            Considered details
+            {c.details.kicker}
           </span>
           <h2
             data-note
-            className="mt-4 max-w-xl font-display text-[clamp(2.4rem,6vw,5.4rem)] font-normal leading-[0.9] tracking-tight text-cream"
+            className="mt-4 max-w-xl font-display text-[var(--text-h1)] font-normal leading-[0.9] tracking-tight text-cream"
           >
-            The work is in the things you don&rsquo;t notice.
+            {c.details.title}
           </h2>
           <ul className="mt-10 grid gap-3">
-            {NOTES.map((note, i) => (
+            {c.details.notes.map((note, i) => (
               <li
                 key={note}
                 data-note
                 className="luxury-panel flex items-baseline gap-5 px-5 py-5 text-cream"
               >
-                <span className="kicker w-8 shrink-0 text-muted">
+                <span className="num-ltr kicker w-8 shrink-0 text-muted">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <span className="text-[var(--text-lead)] leading-snug">{note}</span>

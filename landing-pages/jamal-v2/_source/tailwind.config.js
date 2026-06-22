@@ -17,6 +17,9 @@ export default {
         body: ['Manrope', 'system-ui', 'sans-serif'],
         // The wordmark echoes the JAMAL logo (Didone serif).
         serif: ['"Bodoni Moda"', 'Didot', '"Bodoni 72"', '"Bodoni MT"', 'Georgia', 'serif'],
+        // Arabic: Thmanyah (same family as thmanyah.com), used in the AR locale.
+        arabic: ['"Thmanyah Sans"', 'system-ui', 'sans-serif'],
+        'arabic-display': ['"Thmanyah Serif Display"', '"Thmanyah Sans"', 'serif'],
       },
     },
   },

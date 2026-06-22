@@ -3,6 +3,53 @@
 @tailwind utilities;
 
 /* ============================================================
+   Thmanyah typeface (Arabic) — same family used on thmanyah.com.
+   Relative URLs so Vite hashes + rebases them under the GH-Pages base.
+   ============================================================ */
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/thmanyah/thmanyahsans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/thmanyah/thmanyahsans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('./assets/fonts/thmanyah/thmanyahsans-Bold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyah/thmanyahserifdisplay-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('./assets/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2') format('woff2');
+  font-weight: 600 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
    JAMAL — Linen Atelier · Design tokens (single source of truth)
    Mirrors docs/DESIGN_TOKENS.md. Oxblood / burgundy identity drawn
    straight from the brand mark — one accent only: antique rose.
@@ -19,9 +66,12 @@
   /* Deep linen burgundy for atmosphere / gradients. */
   --wine: #4a1f2a;
 
-  /* Fluid type scale */
-  --text-hero: clamp(4.2rem, 18vw, 15rem);
-  --text-h2: clamp(2.5rem, 8vw, 6.5rem);
+  /* Fluid type scale — ONE harmonized ladder. Two mega anchors (hero + footer)
+     share --text-hero; every section heading shares --text-h1; secondary
+     display lines share --text-h2. Keeps the whole page in proportion. */
+  --text-hero: clamp(3.25rem, 12vw, 11rem);
+  --text-h1: clamp(2.5rem, 6.4vw, 5.75rem);
+  --text-h2: clamp(1.9rem, 4vw, 3.7rem);
   --text-h3: clamp(1.5rem, 3.4vw, 2.5rem);
   --text-lead: clamp(1.05rem, 1.4vw, 1.4rem);
   --gutter: clamp(1.25rem, 3vw, 2.75rem);
@@ -422,6 +472,74 @@ footer[id] {
 }
 .gallery-viewport.is-pinned .gallery-track {
   will-change: transform;
+}
+
+/* ------------------------------------------------------------
+   Arabic locale (lang="ar", dir="rtl") — Thmanyah typeface.
+   Display → Thmanyah Serif Display; body/kicker → Thmanyah Sans.
+   The JAMAL wordmark (inline SVG) stays Latin Bodoni intentionally.
+   ------------------------------------------------------------ */
+html[lang='ar'] body {
+  font-family: 'Thmanyah Sans', system-ui, sans-serif;
+}
+html[lang='ar'] .font-display,
+html[lang='ar'] .font-serif,
+html[lang='ar'] .serif-soft {
+  font-family: 'Thmanyah Serif Display', 'Thmanyah Sans', serif;
+}
+html[lang='ar'] .font-body,
+html[lang='ar'] .kicker {
+  font-family: 'Thmanyah Sans', system-ui, sans-serif;
+}
+
+/* Arabic is cursive — never letter-space or uppercase it. Overrides the
+   intentional Latin .tracking-* / .kicker / .btn / .cursor-label spacing. */
+html[lang='ar'] .kicker,
+html[lang='ar'] .btn,
+html[lang='ar'] .cursor-label,
+html[lang='ar'] [class*='tracking'] {
+  letter-spacing: 0 !important;
+}
+html[lang='ar'] .kicker,
+html[lang='ar'] .btn {
+  text-transform: none;
+}
+
+/* The ultra-tight Didone leading (0.78–0.96) overlaps Arabic ascenders /
+   descenders — relax display + body leading for legibility. */
+html[lang='ar'] .font-display {
+  line-height: 1.22;
+}
+html[lang='ar'] #manifesto-heading {
+  line-height: 1.4;
+}
+
+/* Keep Latin runs (the 01–05 index marks, €280, the email) reading LTR even
+   inside the RTL flow, so digits + symbols don't reorder oddly. */
+html[lang='ar'] .num-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* RTL: the hero second-line optical indent flips side. */
+html[dir='rtl'] .hero-line-indent {
+  padding-left: 0;
+  padding-right: 0.22em;
+}
+
+/* RTL: the CTA arrow points back toward the reading direction (leftward). */
+html[dir='rtl'] .btn__arrow {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+html[dir='rtl'] .btn:hover .btn__arrow,
+html[dir='rtl'] .btn:focus-visible .btn__arrow {
+  transform: scaleX(-1) translateX(4px);
+}
+
+/* RTL: gallery scrub progress fills from the right. */
+html[dir='rtl'] .gallery-progress {
+  transform-origin: right;
 }
 
 /* ------------------------------------------------------------
