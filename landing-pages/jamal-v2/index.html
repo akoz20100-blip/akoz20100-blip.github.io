@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1A0B10" />
-    <link rel="icon" type="image/svg+xml" href="/landing-pages/jamal-v2/favicon.svg" />
 
     <title>JAMAL — Linen Atelier</title>
     <meta
@@ -36,12 +35,10 @@
       rel="stylesheet"
     />
 
-    <!-- First paint of the hero: poster before the video decodes. The clip itself
-         streams (preload=metadata + range requests) rather than being eagerly
-         preloaded — keeps the LCP window clear of the multi-MB hero video. -->
-    <link rel="preload" as="image" href="/landing-pages/jamal-v2/assets/model-360-poster.jpg" fetchpriority="high" />
-    <script type="module" crossorigin src="/landing-pages/jamal-v2/assets/index-dMgAAWrW.js"></script>
-    <link rel="stylesheet" crossorigin href="/landing-pages/jamal-v2/assets/index-D8XRKT-t.css">
+    <!-- Preload hero poster from CDN -->
+    <link rel="preload" as="image" href="https://akoz20100-blip.github.io/landing-pages/jamal-v2/assets/model-360-poster.jpg" fetchpriority="high" />
+    <script type="module" crossorigin src="/Landing-page-/landing-pages/jamal-v2/assets/index-BRmS3Qx2.js"></script>
+    <link rel="stylesheet" crossorigin href="/Landing-page-/landing-pages/jamal-v2/assets/index-Y2pjeBp6.css">
   </head>
   <body>
     <div id="root"></div>
