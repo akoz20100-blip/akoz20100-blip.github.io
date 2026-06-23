@@ -2,13 +2,16 @@ import { useLang, type Lang } from './i18n';
 
 /**
  * Single source of truth for every visible string, in English and Arabic.
- * Components read `useContent()` and never hard-code copy, so the language
- * toggle swaps the whole site. Latin tokens that are intentionally NOT
- * translated (the JAMAL wordmark, the email, €, 360°, the 01–05 index numbers)
- * stay literal in both trees.
+ * Components read `useContent()` and never hard-code copy.
+ * Latin tokens that are intentionally NOT translated (the JAMAL wordmark,
+ * the email, €, 360°, the 01–05 index numbers) stay literal in both trees.
+ *
+ * v2 additions: hero.cta, showcase.badges/priceFrame/sizeGuide/origin,
+ * footer.newsletter, footer.appointment — added without breaking any existing
+ * field names so all components continue to compile.
  */
 export interface SiteContent {
-  langName: string; // label shown on the toggle for the OTHER language
+  langName: string;
   nav: {
     items: { label: string; href: string }[];
     open: string;
@@ -30,6 +33,8 @@ export interface SiteContent {
     cue: string;
     sectionAria: string;
     zoomHint: string;
+    /** v2: primary CTA button below the headline */
+    cta: string;
   };
   manifesto: {
     index: string;
@@ -48,6 +53,14 @@ export interface SiteContent {
     specs: { label: string; value: string }[];
     price: string;
     enquire: string;
+    /** v2: trust signal chips below the price */
+    badges: string[];
+    /** v2: full price framing line */
+    priceFrame: string;
+    /** v2: size guide link label */
+    sizeGuide: string;
+    /** v2: origin line */
+    origin: string;
   };
   marquee: string[];
   loadingLabel: string;
@@ -79,6 +92,10 @@ export interface SiteContent {
     columns: { title: string; links: { label: string; href: string }[] }[];
     backToTop: string;
     copyright: string;
+    /** v2: newsletter form */
+    newsletter: { label: string; placeholder: string; submit: string };
+    /** v2: appointment booking form */
+    appointment: { label: string; namePlaceholder: string; emailPlaceholder: string; submit: string };
   };
 }
 
@@ -100,7 +117,7 @@ const en: SiteContent = {
     toAria: 'JAMAL — Linen Atelier, back to top',
   },
   hero: {
-    kicker: 'Linen Atelier',
+    kicker: 'New Season — The Atelier Set',
     vol: 'Vol. 01 — Est. 2026',
     line1: 'One garment.',
     line2: 'Every angle',
@@ -110,16 +127,17 @@ const en: SiteContent = {
     cue: 'Scroll to rotate',
     sectionAria: 'JAMAL — the linen set, rotating',
     zoomHint: 'Hold to look closer',
+    cta: 'Shop the Collection',
   },
   manifesto: {
-    index: '01 — Manifesto',
+    index: '01 — Atelier',
     brief: 'The brief',
     statementPre:
       'We make one thing, and we make it completely — a single linen set, cut for ease and finished by hand. No seasons, no noise. Just cloth that breathes, softens with wear, and is meant to be ',
     statementAccent: 'lived in',
     statementPost: '.',
-    figCaption: 'European linen · garment-washed',
-    lead: 'Garment-washed European linen, a grandad-collar shirt and a relaxed trouser, drawn in one neutral. Considered from every angle — which is why you can turn it in the light above, and why nothing here is left to chance.',
+    figCaption: 'European linen · garment-washed · Lisbon',
+    lead: 'Garment-washed European linen, a grandad-collar shirt and a relaxed trouser, drawn in one warm neutral. A two-person studio, considered from every angle — which is why you can turn it in the light above, and why nothing here is left to chance.',
   },
   showcase: {
     piece: 'The piece',
@@ -129,56 +147,63 @@ const en: SiteContent = {
     specs: [
       { label: 'Fabric', value: '100% European linen' },
       { label: 'Finish', value: 'Garment-washed, hand-pressed' },
-      { label: 'Collar', value: 'Grandad / band' },
-      { label: 'Fit', value: 'Relaxed, drawstring trouser' },
+      { label: 'Buttons', value: 'Hand-sewn coconut shell' },
+      { label: 'Seams', value: 'Double-felled for longevity' },
+      { label: 'Sizes', value: 'XS — XXL' },
+      { label: 'Origin', value: 'Lisbon, Portugal' },
     ],
     price: 'From €280',
-    enquire: 'Enquire',
+    enquire: 'Reserve Your Set',
+    badges: ['European Linen', 'Garment Washed', 'Handcrafted'],
+    priceFrame: 'Two-Piece Atelier Set · Starting at €280',
+    sizeGuide: 'Size Guide',
+    origin: 'Crafted in Lisbon by hand',
   },
   marquee: [
-    'Garment-washed linen',
-    'Made by hand',
+    'Garment-washed European linen',
+    'Made by hand in Lisbon',
     'One considered set',
-    'Lisbon',
-    'Est. 2026',
+    'Since 2026',
+    'Appointments welcome',
   ],
   loadingLabel: 'Loading the atelier',
   details: {
     index: '03 — In wear',
     band: 'Cut for ease. Worn in company.',
     kicker: 'Considered details',
-    title: 'The work is in the things you don’t notice.',
+    title: "The work is in the things you don't notice.",
     notes: [
-      'Coconut buttons, sewn by hand',
-      'Side seams felled for softness',
-      'Pre-washed so it never shrinks on you',
-      'One neutral, dyed in small batches',
+      'Coconut buttons, hand-sewn one by one',
+      'Side seams double-felled for softness that lasts',
+      'Pre-washed — never shrinks, only softens',
+      'One neutral, dyed in small batches · Lisbon',
     ],
   },
   gallery: {
-    index: '04 — Gallery',
+    index: '04 — Lookbook',
     explore: 'Scroll to explore',
-    title1: 'The',
-    title2: 'lookbook',
+    title1: 'Worn,',
+    title2: 'not displayed.',
     intro: 'One set, many lives. Shot in warm light and worn the way it should be.',
-    outro: 'Make it yours.',
-    enquire: 'Enquire',
+    outro: 'Claim your set.',
+    enquire: 'Reserve Now',
     captions: [
-      'At rest',
-      'Doorway',
-      'The set — front',
-      'Evening',
-      'Collar study',
-      'The set — back',
+      'Morning light, terrace',
+      'Doorway, Alfama',
+      'The set — front view',
+      'Evening, worn loose',
+      'Collar study, natural light',
+      'The set — back view',
     ],
-    regionAria: 'Lookbook — use arrow keys or scroll to browse',
+    regionAria: 'Lookbook — use arrow keys or scroll to browse six images',
   },
   footer: {
     index: '05 — Contact',
-    title: 'Let’s talk',
-    titleAccent: '.',
+    title: 'Visit the',
+    titleAccent: 'atelier.',
     email: 'atelier@jamal-linen.com',
-    about: 'JAMAL is a linen atelier making one considered set, by hand, in small batches. Studio visits by appointment.',
+    about:
+      'A small studio in Lisbon. We make one thing at a time, in quantities that make sense. Studio visits by appointment — always welcome.',
     place: 'Lisbon · By appointment',
     columns: [
       {
@@ -190,16 +215,28 @@ const en: SiteContent = {
         ],
       },
       {
-        title: 'Social',
+        title: 'Information',
         links: [
+          { label: 'Size Guide', href: '#collection' },
+          { label: 'Care Instructions', href: '#atelier' },
           { label: 'Instagram', href: 'https://instagram.com' },
           { label: 'Pinterest', href: 'https://pinterest.com' },
-          { label: 'Journal', href: '#atelier' },
         ],
       },
     ],
     backToTop: 'Back to top ↑',
     copyright: '© 2026 JAMAL Linen Atelier. All rights reserved.',
+    newsletter: {
+      label: 'New collections, first.',
+      placeholder: 'your@email.com',
+      submit: 'Subscribe',
+    },
+    appointment: {
+      label: 'Book a studio visit',
+      namePlaceholder: 'Your name',
+      emailPlaceholder: 'your@email.com',
+      submit: 'Request Appointment →',
+    },
   },
 };
 
@@ -210,10 +247,10 @@ const ar: SiteContent = {
       { label: 'المجموعة', href: '#collection' },
       { label: 'الأتيليه', href: '#atelier' },
       { label: 'المعرض', href: '#gallery' },
-      { label: 'تواصل', href: '#contact' },
+      { label: 'تواصل معنا', href: '#contact' },
     ],
-    open: 'افتح القائمة',
-    close: 'أغلق القائمة',
+    open: 'فتح القائمة',
+    close: 'إغلاق القائمة',
     tagline: 'أتيليه الكتّان · لشبونة',
     primary: 'الرئيسية',
     mobile: 'الجوال',
@@ -221,85 +258,93 @@ const ar: SiteContent = {
     toAria: 'جمال — أتيليه الكتّان، العودة إلى الأعلى',
   },
   hero: {
-    kicker: 'أتيليه الكتّان',
-    vol: 'العدد 01 — منذ 2026',
-    line1: 'قطعةٌ واحدة.',
+    kicker: 'الموسم الجديد — طقم الأتيليه',
+    vol: 'العدد ٠١ — منذ ٢٠٢٦',
+    line1: 'قطعةٌ واحدة،',
     line2: 'من كل زاوية',
     line2Accent: '.',
     chipKicker: 'القطعة',
-    chipBody: 'كتّان أوروبي مغسول · 360° في الضوء.',
+    chipBody: 'كتّان أوروبي مغسول · ٣٦٠° في الضوء.',
     cue: 'مرّر للدوران',
     sectionAria: 'جمال — طقم الكتّان، يدور',
     zoomHint: 'اضغط مطوّلاً للتقريب',
+    cta: 'تسوّق المجموعة',
   },
   manifesto: {
-    index: '01 — البيان',
+    index: '٠١ — الأتيليه',
     brief: 'الموجز',
     statementPre:
       'نصنع شيئاً واحداً، ونُتقنه كاملاً — طقم كتّانٍ واحد، مقصوصٌ للراحة ومُنجَزٌ باليد. لا مواسم، ولا ضجيج. مجرّد قماشٍ يتنفّس، يلين مع الارتداء، وصُنِع ',
     statementAccent: 'لِيُعاش فيه',
     statementPost: '.',
-    figCaption: 'كتّان أوروبي · مغسول',
-    lead: 'كتّان أوروبي مغسول، قميصٌ بياقة الجَدّ وبنطالٌ مريح، بلونٍ محايدٍ واحد. مدروسٌ من كل زاوية — لذا يمكنك تدويره في الضوء أعلاه، ولذا لا شيء هنا متروكٌ للصدفة.',
+    figCaption: 'كتّان أوروبي · مغسول · لشبونة',
+    lead: 'كتّان أوروبي مغسول، قميصٌ بياقة الجَدّ وبنطالٌ مريح، بلونٍ محايدٍ دافئٍ واحد. استوديو من شخصَين، مدروسٌ من كل زاوية — لذا يمكنك تدويره في الضوء أعلاه، ولذا لا شيء هنا متروكٌ للصدفة.',
   },
   showcase: {
     piece: 'القطعة',
-    index: '02 — المجموعة',
+    index: '٠٢ — المجموعة',
     title: 'طقم الأتيليه',
     lead: 'إطلالةٌ مكتملةٌ بهدوء. قميصٌ بياقة الجَدّ يلين مع كل غسلة، يُرتدى مع بنطالٍ مريحٍ برباط — كلاهما مقصوصان من الكتّان الأوروبي المغسول نفسه، بلونٍ محايدٍ دافئٍ واحد.',
     specs: [
-      { label: 'الخامة', value: 'كتّان أوروبي 100%' },
-      { label: 'التشطيب', value: 'مغسول، مكويٌّ باليد' },
-      { label: 'الياقة', value: 'ياقة الجَدّ' },
-      { label: 'القَصّة', value: 'مريحة، بنطال برباط' },
+      { label: 'الخامة', value: 'كتّان أوروبي ١٠٠٪' },
+      { label: 'التشطيب', value: 'مغسول يدوياً، مكويٌّ باليد' },
+      { label: 'الأزرار', value: 'جوز الهند، مخيط يدوياً' },
+      { label: 'الخياطة', value: 'مزدوجة مطويّة للمتانة' },
+      { label: 'المقاسات', value: 'XS — XXL' },
+      { label: 'المنشأ', value: 'لشبونة، البرتغال' },
     ],
     price: 'يبدأ من €280',
-    enquire: 'استفسر',
+    enquire: 'احجز طقمك',
+    badges: ['كتّان أوروبي', 'مغسول يدوياً', 'مصنوع حرفياً'],
+    priceFrame: 'طقم الأتيليه — قطعتان · يبدأ من €280',
+    sizeGuide: 'دليل المقاسات',
+    origin: 'مصنوع في لشبونة باليد',
   },
   marquee: [
-    'كتّان مغسول',
-    'صُنِع باليد',
-    'طقمٌ مدروس',
-    'لشبونة',
-    'منذ 2026',
+    'كتّان أوروبي مغسول',
+    'صُنِع باليد في لشبونة',
+    'طقمٌ مدروس واحد',
+    'منذ ٢٠٢٦',
+    'الزيارات بالموعد',
   ],
   loadingLabel: 'جارٍ تحضير الأتيليه',
   details: {
-    index: '03 — في الارتداء',
+    index: '٠٣ — في الارتداء',
     band: 'مقصوصٌ للراحة. يُرتدى بصُحبة.',
     kicker: 'تفاصيل مدروسة',
     title: 'الإتقان في ما لا تُلاحظه.',
     notes: [
-      'أزرار جوز الهند، مخيطة باليد',
-      'خياطةٌ جانبية مطويّة للنعومة',
-      'مغسولٌ مسبقاً فلا ينكمش عليك',
-      'لونٌ محايدٌ واحد، مصبوغٌ بدفعاتٍ صغيرة',
+      'أزرار جوز الهند، مخيطة باليد واحدةً واحدة',
+      'خياطةٌ جانبية مزدوجة مطويّة — نعومةٌ تدوم',
+      'مغسولٌ مسبقاً — لا ينكمش، فقط يلين',
+      'لونٌ محايدٌ واحد، مصبوغٌ بدفعاتٍ صغيرة · لشبونة',
     ],
   },
   gallery: {
-    index: '04 — المعرض',
+    index: '٠٤ — المعرض',
     explore: 'مرّر للاستكشاف',
-    title1: 'دفتر',
-    title2: 'الإطلالات',
+    title1: 'يُرتدى،',
+    title2: 'لا يُعرَض.',
     intro: 'طقمٌ واحد، حيواتٌ كثيرة. مُصوّرٌ في ضوءٍ دافئ ومُرتدى كما ينبغي.',
     outro: 'اجعله لك.',
-    enquire: 'استفسر',
+    enquire: 'احجز الآن',
     captions: [
-      'في سكون',
-      'عند الباب',
-      'الطقم — أمام',
-      'مساءً',
-      'دراسة الياقة',
-      'الطقم — خلف',
+      'في سكون، صباحاً',
+      'عند العتبة، ألفاما',
+      'الطقم — من الأمام',
+      'مساءً، منسدل بحرية',
+      'دراسة الياقة في الضوء الطبيعي',
+      'الطقم — من الخلف',
     ],
-    regionAria: 'دفتر الإطلالات — استخدم مفاتيح الأسهم أو مرّر للتصفح',
+    regionAria: 'دفتر الإطلالات — استخدم مفاتيح الأسهم أو مرّر لتصفح ست صور',
   },
   footer: {
-    index: '05 — تواصل',
-    title: 'لنتحدّث',
-    titleAccent: '.',
+    index: '٠٥ — تواصل',
+    title: 'زُر',
+    titleAccent: 'الأتيليه.',
     email: 'atelier@jamal-linen.com',
-    about: 'جمال أتيليه كتّان يصنع طقماً واحداً مدروساً، باليد، بدفعاتٍ صغيرة. زيارات الأتيليه بموعدٍ مسبق.',
+    about:
+      'استوديو صغير في لشبونة. نصنع قطعة واحدة في كل مرة، بكمياتٍ تعكس قيمة الصنعة. زيارات الأتيليه بموعدٍ مسبق — أهلاً دائماً.',
     place: 'لشبونة · بموعدٍ مسبق',
     columns: [
       {
@@ -311,16 +356,28 @@ const ar: SiteContent = {
         ],
       },
       {
-        title: 'تابعنا',
+        title: 'معلومات',
         links: [
+          { label: 'دليل المقاسات', href: '#collection' },
+          { label: 'العناية بالقماش', href: '#atelier' },
           { label: 'إنستغرام', href: 'https://instagram.com' },
           { label: 'بنترست', href: 'https://pinterest.com' },
-          { label: 'المجلّة', href: '#atelier' },
         ],
       },
     ],
     backToTop: 'إلى الأعلى ↑',
-    copyright: '© 2026 جمال أتيليه الكتّان. جميع الحقوق محفوظة.',
+    copyright: '© ٢٠٢٦ جمال أتيليه الكتّان. جميع الحقوق محفوظة.',
+    newsletter: {
+      label: 'كُن أول من يعلم بالمجموعات الجديدة.',
+      placeholder: 'بريدك الإلكتروني',
+      submit: 'اشترك',
+    },
+    appointment: {
+      label: 'احجز زيارة للاستوديو',
+      namePlaceholder: 'اسمك',
+      emailPlaceholder: 'بريدك الإلكتروني',
+      submit: 'طلب موعد ←',
+    },
   },
 };
 
