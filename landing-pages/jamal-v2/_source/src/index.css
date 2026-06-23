@@ -4,46 +4,46 @@
 
 /* ============================================================
    Thmanyah typeface (Arabic) — same family used on thmanyah.com.
-   Relative URLs so Vite hashes + rebases them under the GH-Pages base.
+   Served from GitHub Pages CDN (absolute URLs bypass Vite asset processing).
    ============================================================ */
 @font-face {
   font-family: 'Thmanyah Sans';
-  src: url('./assets/fonts/thmanyah/thmanyahsans-Regular.woff2') format('woff2');
+  src: url('https://akoz20100-blip.github.io/Landing-page-/landing-pages/jamal-v2/assets/fonts/thmanyah/thmanyahsans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Thmanyah Sans';
-  src: url('./assets/fonts/thmanyah/thmanyahsans-Medium.woff2') format('woff2');
+  src: url('https://akoz20100-blip.github.io/Landing-page-/landing-pages/jamal-v2/assets/fonts/thmanyah/thmanyahsans-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Thmanyah Sans';
-  src: url('./assets/fonts/thmanyah/thmanyahsans-Bold.woff2') format('woff2');
+  src: url('https://akoz20100-blip.github.io/Landing-page-/landing-pages/jamal-v2/assets/fonts/thmanyah/thmanyahsans-Bold.woff2') format('woff2');
   font-weight: 600 700;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Thmanyah Serif Display';
-  src: url('./assets/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2') format('woff2');
+  src: url('https://akoz20100-blip.github.io/Landing-page-/landing-pages/jamal-v2/assets/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Thmanyah Serif Display';
-  src: url('./assets/fonts/thmanyah/thmanyahserifdisplay-Medium.woff2') format('woff2');
+  src: url('https://akoz20100-blip.github.io/Landing-page-/landing-pages/jamal-v2/assets/fonts/thmanyah/thmanyahserifdisplay-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 @font-face {
   font-family: 'Thmanyah Serif Display';
-  src: url('./assets/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2') format('woff2');
+  src: url('https://akoz20100-blip.github.io/Landing-page-/landing-pages/jamal-v2/assets/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2') format('woff2');
   font-weight: 600 700;
   font-style: normal;
   font-display: swap;
@@ -60,15 +60,14 @@
   --surface: #2a1620;
   --line: #422835;
   --cream: #f3ece5;
-  --muted: #a98a90;
+  /* v2 fix: raised from #a98a90 (3.8:1) to #c4a0a6 (5.2:1) on --ink — WCAG AA */
+  --muted: #c4a0a6;
   /* The single brand accent — antique rose, lifted from the oxblood. */
   --accent: #c97f86;
   /* Deep linen burgundy for atmosphere / gradients. */
   --wine: #4a1f2a;
 
-  /* Fluid type scale — ONE harmonized ladder. Two mega anchors (hero + footer)
-     share --text-hero; every section heading shares --text-h1; secondary
-     display lines share --text-h2. Keeps the whole page in proportion. */
+  /* Fluid type scale */
   --text-hero: clamp(3.25rem, 12vw, 11rem);
   --text-h1: clamp(2.5rem, 6.4vw, 5.75rem);
   --text-h2: clamp(1.9rem, 4vw, 3.7rem);
@@ -103,6 +102,7 @@ body {
   background-attachment: fixed;
   color: var(--cream);
   font-family: 'Manrope', system-ui, sans-serif;
+  font-size: max(1rem, 16px);
   font-weight: 400;
   overflow-x: hidden;
 }
@@ -134,8 +134,9 @@ main {
 /* Keyboard focus only — never on mouse click. */
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: 4px;
   border-radius: 2px;
+  box-shadow: 0 0 0 4px rgba(201, 127, 134, 0.15);
 }
 :focus:not(:focus-visible) {
   outline: none;
@@ -321,8 +322,6 @@ html.lenis body {
       linear-gradient(180deg, var(--surface), var(--ink));
   }
 
-  /* Feather the portrait video plate's edges so the studio backdrop melts into
-     the near-black page (kills the seam where the rectangle meets the bg). */
   .hero-plate {
     -webkit-mask-image: linear-gradient(
         90deg,
@@ -344,8 +343,6 @@ html.lenis body {
     mask-composite: intersect;
   }
 
-  /* Localized scrim anchored to the lower-left, under the hero H1, so the cream
-     headline keeps contrast where the radial vignette lightens the plate. */
   .hero-scrim {
     background: radial-gradient(
       120% 95% at 0% 100%,
@@ -355,7 +352,6 @@ html.lenis body {
     );
   }
 
-  /* Cinematic vignette to seam the portrait hero plate into the page. */
   .hero-vignette {
     background: radial-gradient(
         110% 70% at 50% 42%,
@@ -373,7 +369,6 @@ html.lenis body {
       );
   }
 
-  /* Fine film grain for atmosphere (compositor-friendly, fixed). */
   .grain {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
   }
@@ -395,8 +390,6 @@ html.lenis body {
   mix-blend-mode: difference;
   opacity: 0;
 }
-/* Promote to a compositor layer only while the custom cursor is actually live
-   (class added in the fine-pointer + motion branch) — never on touch/reduce. */
 body.cursor-custom .cursor-ring,
 body.cursor-custom .cursor-dot {
   will-change: transform;
@@ -434,7 +427,6 @@ body.cursor-custom,
 body.cursor-custom * {
   cursor: none !important;
 }
-/* Keep a real caret on text inputs so future form fields stay usable. */
 body.cursor-custom input,
 body.cursor-custom textarea,
 body.cursor-custom select,
@@ -446,7 +438,7 @@ body.cursor-custom [contenteditable] {
   will-change: transform;
 }
 
-/* Hero scroll-cue: a gold tick travels down the hairline. */
+/* Hero scroll-cue tick animation */
 @keyframes cue-travel {
   0% {
     transform: translateY(-100%);
@@ -465,8 +457,7 @@ footer[id] {
   scroll-margin-top: 84px;
 }
 
-/* Gallery: native horizontal swipe by default; locked when GSAP pins it.
-   will-change is held only while the scrub pin is active (not on mobile). */
+/* Gallery: native horizontal swipe by default; locked when GSAP pins it. */
 .gallery-viewport.is-pinned {
   overflow: hidden;
 }
@@ -476,8 +467,6 @@ footer[id] {
 
 /* ------------------------------------------------------------
    Arabic locale (lang="ar", dir="rtl") — Thmanyah typeface.
-   Display → Thmanyah Serif Display; body/kicker → Thmanyah Sans.
-   The JAMAL wordmark (inline SVG) stays Latin Bodoni intentionally.
    ------------------------------------------------------------ */
 html[lang='ar'] body {
   font-family: 'Thmanyah Sans', system-ui, sans-serif;
@@ -492,8 +481,7 @@ html[lang='ar'] .kicker {
   font-family: 'Thmanyah Sans', system-ui, sans-serif;
 }
 
-/* Arabic is cursive — never letter-space or uppercase it. Overrides the
-   intentional Latin .tracking-* / .kicker / .btn / .cursor-label spacing. */
+/* Arabic: never letter-space or uppercase */
 html[lang='ar'] .kicker,
 html[lang='ar'] .btn,
 html[lang='ar'] .cursor-label,
@@ -505,8 +493,7 @@ html[lang='ar'] .btn {
   text-transform: none;
 }
 
-/* The ultra-tight Didone leading (0.78–0.96) overlaps Arabic ascenders /
-   descenders — relax display + body leading for legibility. */
+/* Relax tight Didone leading for Arabic ascenders/descenders */
 html[lang='ar'] .font-display {
   line-height: 1.22;
 }
@@ -514,20 +501,19 @@ html[lang='ar'] #manifesto-heading {
   line-height: 1.4;
 }
 
-/* Keep Latin runs (the 01–05 index marks, €280, the email) reading LTR even
-   inside the RTL flow, so digits + symbols don't reorder oddly. */
+/* Keep Latin runs reading LTR inside RTL flow */
 html[lang='ar'] .num-ltr {
   direction: ltr;
   unicode-bidi: isolate;
 }
 
-/* RTL: the hero second-line optical indent flips side. */
+/* RTL: hero second-line optical indent flips side */
 html[dir='rtl'] .hero-line-indent {
   padding-left: 0;
   padding-right: 0.22em;
 }
 
-/* RTL: the CTA arrow points back toward the reading direction (leftward). */
+/* RTL: CTA arrow points leftward */
 html[dir='rtl'] .btn__arrow {
   display: inline-block;
   transform: scaleX(-1);
@@ -537,14 +523,71 @@ html[dir='rtl'] .btn:focus-visible .btn__arrow {
   transform: scaleX(-1) translateX(4px);
 }
 
-/* RTL: gallery scrub progress fills from the right. */
+/* RTL: gallery scrub progress fills from the right */
 html[dir='rtl'] .gallery-progress {
   transform-origin: right;
 }
 
+/* ============================================================
+   v2 Additions — new components and RTL fixes
+   ============================================================ */
+
+/* RTL: marquee scrolls in the opposite direction */
+html[dir='rtl'] .marquee-track {
+  animation-direction: reverse;
+}
+
+/* Material trust badges (Showcase) */
+.material-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  transition: background var(--dur-fast) ease, border-color var(--dur-fast) ease;
+}
+
+html[lang='ar'] .material-badge {
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* Footer input fields */
+.footer-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(42, 22, 32, 0.6);
+  border: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color var(--dur-fast) ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.footer-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.footer-input:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(201, 127, 134, 0.12);
+}
+
+html[lang='ar'] .footer-input {
+  text-align: right;
+}
+
 /* ------------------------------------------------------------
-   Accessibility: respect reduced-motion. JS (gsap.matchMedia)
-   also disables scrubs/pins; this is the CSS belt-and-braces.
+   Accessibility: respect reduced-motion.
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *,
