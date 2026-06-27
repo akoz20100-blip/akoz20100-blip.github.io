@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.log
+.env
+.env.local
+.DS_Store
+
+# Generated demo data (package-root /data only — NOT src/data source code).
+# The server reproduces an identical dataset in-memory via the deterministic
+# synthetic fallback, so none of this needs to live in git.
+# Run `npm run seed` to materialize it locally.
+/data/
+
+# Real / private hospital exports dropped in by the operator always stay out of git.
+/data/private/
