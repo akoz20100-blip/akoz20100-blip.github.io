@@ -1,0 +1,674 @@
+# Atheer Al-Zahrani — Master Build Brief
+# أثير الزهراني — الموجز الشامل لبناء صفحة الهبوط/البورتفوليو
+
+> **One file = everything.** Content + Design System + Images + Motion + a full
+> working reference implementation. Hand this to Codex (or any AI builder) to
+> build — and *level up* — the final "legendary" version.
+>
+> **ملف واحد = كل شيء:** المحتوى + نظام التصميم + الصور + الحركة + كود مرجعي كامل
+> يعمل. أعطِ هذا الملف لـ Codex ليبني النسخة النهائية الأسطورية ويطوّرها.
+
+---
+
+## 0. How to use this file — كيف تستخدم هذا الملف (for Codex)
+
+1. Build a **single-page, bilingual (Arabic default / English), RTL-first**
+   landing page for a freelance creative designer.
+2. Follow the **Design System (§4–§7)** exactly — it is the canonical look
+   ("Liquid Glass", monochrome, Thmanyah Arabic font). The **content (§9)** may
+   be reworded/extended; the **design system stays stable**.
+3. Use the **images in §10** as temporary placeholders; structure the code so
+   the owner can swap them for Atheer's real work easily.
+4. A **complete, working reference implementation is in Appendix A** — start
+   from it, then improve (see §12 "What legendary means").
+5. Output: clean, production-ready code (your choice of stack — plain
+   HTML/CSS/JS, or React/Vite, or Next.js static export). Keep it fast and
+   accessible. Self-host fonts and images for production.
+
+---
+
+## 1. Project & goal — المشروع والهدف
+
+A portfolio / landing page whose job is to **win freelance work**: a visitor
+quickly understands Atheer's skills and past work, then contacts her.
+
+- **Primary flow:** browse the work → then contact.
+- **Primary CTA:** **WhatsApp** (persistent, repeated top / mid / bottom).
+- **Tone:** confident but warm; benefit-first; concrete; AI positioned as an
+  *edge* (speed + range + iteration) with a designer's taste on top.
+- **هدف الصفحة:** جذب عمل حر — الزائر يفهم مهاراتها وأعمالها بسرعة ثم يتواصل.
+  المسار: تصفّح ثم تواصل. زر واتساب ثابت ومتكرّر.
+
+---
+
+## 2. The person & services — الشخص والخدمات
+
+**Atheer Al-Zahrani (أثير الزهراني)** — *"AI Creative Designer & Content Creator"*
+/ «مصمِّمة ومهتمّة بالذكاء الاصطناعي». A Saudi designer who blends design taste
+with multiple AI models.
+
+**Services (all featured):**
+| # | 🇸🇦 العربية | 🇬🇧 English | الوصف / Description |
+|---|---|---|---|
+| 1 | مونتاج وتحرير الفيديو | Video Editing | ريلز، إعلانات قصيرة، محتوى سوشال. / Reels, short ads, social video. |
+| 2 | توليد الصور بالذكاء الاصطناعي | AI Image Generation | صور منتجات/أشخاص/مشاهد عبر عدّة نماذج. / Product, portrait & scene imagery via multiple models. |
+| 3 | **تحسين الصور الاحترافي** *(مميّزة)* | **Pro Photo Enhancement** *(signature)* | تحويل أي صورة عادية إلى جودة كاميرا احترافية — مثالية للعقار والمنتجات. / Turn any ordinary photo into pro-camera quality — ideal for real estate & products. |
+| 4 | تصميم الشعارات والهوية | Logo & Brand Identity | شعار + ألوان + خطوط + دليل. / Logo + colors + type + guide. |
+| 5 | التصميم الداخلي والأثاث | Interior & Furniture | تصوّرات واقعية للمساحات وتنسيق الأثاث. / Realistic space & furniture visualizations. |
+| 6 | المحتوى والتسويق | Content & Marketing | أفكار حملات ومحتوى يجذب العميل. / Campaign ideas & content that converts. |
+
+> **Signature angle:** the **photo-enhancement** service is a strong hook
+> (the owner used it for real-estate/apartment photos). Give it its own
+> animated *before/after* section.
+
+---
+
+## 3. Audience, languages, conversion — الجمهور واللغات والتحويل
+
+- **Audience:** local & Gulf businesses (brands, shops, restaurants, real
+  estate, salons) needing branding, content & AI visuals.
+- **Languages:** **bilingual AR + EN with a toggle; default Arabic / RTL.**
+  Toggling swaps copy, `<html lang/dir>`, **and the font stack** (see §5).
+  Persist the choice (localStorage).
+- **Conversion:** one persistent WhatsApp CTA; secondary email/form optional.
+
+---
+
+## 4. Design System — نظام التصميم  ·  "Digitize / Liquid Glass"
+
+**Mood:** sophisticated, investment-grade, "Liquid Glass" — deep black,
+blur-heavy glassmorphism, **strict monochrome** (color comes only from
+imagery/video), editorial serif display headings.
+
+### Color tokens
+```css
+:root{
+  --black:#000;          /* page background */
+  --white:#fff;          /* primary text / CTA */
+  --muted:rgba(255,255,255,.60);
+  --faint:rgba(255,255,255,.42);
+  --glass-bg:rgba(255,255,255,.03);     /* glass surface */
+  --glass-strong:rgba(255,255,255,.06);
+  --line:rgba(255,255,255,.13);         /* hairline borders */
+  /* feedback */
+  --whatsapp:#25d366;    /* only for the WhatsApp button, optional */
+}
+```
+- **Do NOT** introduce accent hues (blue/green/gold). Monochrome only.
+- Glass borders use the **transparent mask border trick** (1.4px gradient),
+  never solid borders.
+
+### Spacing / radius / shape
+```css
+--radius:16px; --radius-lg:24px; --radius-pill:9999px;
+--section:clamp(70px,10vw,120px);   /* generous vertical rhythm (8pt grid) */
+--gutter:clamp(20px,5vw,64px);
+--ease:cubic-bezier(.16,1,.3,1);
+```
+- Pills (`9999px`) for all buttons/badges. Soft 16–24px rounding for cards/media.
+- Section padding is deliberately large so glass + imagery breathe.
+
+---
+
+## 5. Typography — الخطوط  ·  Thmanyah (خط ثمانية) + Latin
+
+The Arabic typeface is **خط ثمانية / Thmanyah**, sourced from **thmanyah.com**
+(the exact files already used by the repo's `eddah` & `jamal-v2` projects). It
+ships **two families** that mirror the Latin serif/sans pairing:
+
+| Role | English (Latin) | Arabic |
+|---|---|---|
+| Headings / display | **Instrument Serif** *(italic, tracking -0.035em)* | **Thmanyah Serif Display** *(upright, normal tracking)* |
+| Body / UI | **Barlow** (300/400/500) | **Thmanyah Sans** (300/400/500/700) |
+
+**Rules**
+- Arabic headings are **upright** (never synthetically italicized).
+- **Never** apply negative `letter-spacing` to Arabic (it breaks cursive
+  joining) — reset to `normal`. Use `line-height:1.7` for Arabic body, `1.6` Latin.
+
+**`@font-face` (self-host for production — copy `.woff2` into
+`assets/fonts/thmanyah/`):**
+```css
+@font-face{font-family:'Thmanyah Sans';src:url('assets/fonts/thmanyah/thmanyahsans-Light.woff2')   format('woff2');font-weight:300;font-display:swap}
+@font-face{font-family:'Thmanyah Sans';src:url('assets/fonts/thmanyah/thmanyahsans-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Thmanyah Sans';src:url('assets/fonts/thmanyah/thmanyahsans-Medium.woff2')  format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Thmanyah Sans';src:url('assets/fonts/thmanyah/thmanyahsans-Bold.woff2')    format('woff2');font-weight:600 700;font-display:swap}
+@font-face{font-family:'Thmanyah Serif Display';src:url('assets/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Thmanyah Serif Display';src:url('assets/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2')    format('woff2');font-weight:600 700;font-display:swap}
+```
+Available weights in the repo: `Light, Regular, Medium, Bold, Black` for **both**
+`thmanyahsans-*` and `thmanyahserifdisplay-*`.
+
+**Currently-live source URLs** (work right now, GitHub Pages + CORS `*`) — fine
+for a quick prototype; self-host for production:
+```
+https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahsans-Regular.woff2
+https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2
+… (Light / Medium / Bold / Black, for both sans & serifdisplay)
+```
+
+**Locale switch (CSS hook — mirrors `jamal-v2`):**
+```css
+:root{--font-head:'Thmanyah Serif Display',serif;--font-body:'Thmanyah Sans',system-ui,sans-serif;--hs:normal;--ht:normal}
+html.lang-en{--font-head:'Instrument Serif',Georgia,serif;--font-body:'Barlow',system-ui,sans-serif;--hs:italic;--ht:-.035em}
+h1,h2,h3,.display{font-family:var(--font-head);font-style:var(--hs);letter-spacing:var(--ht)}
+body{font-family:var(--font-body)}
+```
+**Latin from Google Fonts:**
+```html
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+```
+
+### Type scale (fluid)
+```
+h1/hero : clamp(2.9rem,8.8vw,6.6rem)   h2/section: clamp(2rem,5vw,3.4rem)
+h3/card : clamp(1.3rem,2.5vw,1.6rem)   lede: clamp(1rem,1.7vw,1.22rem) (w300)
+body 1rem/1.7 · eyebrow .72rem 600 UPPERCASE (Latin) / normal tracking (Arabic)
+```
+
+---
+
+## 6. Components & layout — المكوّنات والتخطيط
+
+- **Floating navbar:** fixed pill, 16px top offset, `backdrop-blur`, hairline
+  border; brand + nav links + **AR/EN toggle** + WhatsApp button. Hamburger on mobile.
+- **Glass primitive:** translucent surface + blur + the 1.4px gradient mask border.
+- **Immersive hero:** full-bleed background (video or image) with dark gradient
+  masks for legibility; large display headline + lede + primary/secondary CTA.
+- **Marquee strip:** horizontal infinite-scrolling keyword ribbon (services).
+- **Stats bar:** centered glass panel, big display numbers (count-up).
+- **Service cards:** glass cards, icon in a glass circle, hover-lift.
+- **Before/After:** the signature enhancement showcase (auto-animated wipe).
+- **Portfolio grid:** glass image tiles with category tag, hover image-zoom.
+- **Process steps:** numbered glass cards (٠١–٠٤).
+- **CTA band + footer.**
+- Use **logical properties** (`margin-inline`, `inset-inline-start`) so the
+  whole layout mirrors automatically in RTL. Flip directional icons with `dir`.
+
+---
+
+## 7. Motion spec — مواصفات الحركة (make it feel alive)
+
+- **Hero:** slow **Ken Burns** zoom/pan on the background + drifting blurred orbs + grain.
+- **Marquee:** continuous horizontal scroll (~24s linear, seamless via duplicated content).
+- **Stats:** count-up when scrolled into view (Arabic-Indic numerals in AR).
+- **Before/After:** auto `clip-path` wipe looping back and forth (~5.5s) to reveal the enhancement.
+- **Cards/tiles:** hover lift + image zoom (and grayscale→color on hover).
+- **Scroll reveal:** blur-in (`blur(10px)+translateY(40px) → 0`), staggered per group.
+- **CTA:** soft pulsing glow.
+- **Accessibility:** honor `prefers-reduced-motion: reduce` (disable transforms/loops);
+  include a safety so revealed content never stays hidden if observers misfire.
+
+---
+
+## 8. Page structure — هيكل الصفحة (section order)
+
+`Navbar → Hero → Marquee → Stats → About → Services → Before/After (signature)
+→ Portfolio → Process → CTA → Footer`
+
+---
+
+## 9. Full bilingual content — كامل المحتوى (ثنائي اللغة)
+
+**Navbar:** الرئيسية/نبذة/الخدمات/أعمالي/تواصل · Home/About/Services/Work/Contact ·
+toggle `ع/EN` · CTA «تواصلي معي» / "Let's talk".
+
+**Hero**
+- Eyebrow: «مصمِّمة ومهتمّة بالذكاء الاصطناعي» / "AI Creative Designer"
+- Headline: «فنٌّ بصري بحِرفيّة الذكاء الاصطناعي» / "Visual artistry, powered by AI"
+- Lede: «فيديو، صور، شعارات، وتصميم داخلي — وتحويل أي صورة عادية إلى صورة احترافية
+  وكأنها التُقطت بكاميرا محترفة. كل ما تحتاجه علامتك في مكان واحد.» /
+  "Video, photos, logos and interior design — plus turning any ordinary photo
+  into a pro-camera-quality shot. Everything your brand needs, in one place."
+- CTAs: «شوفي أعمالي» / "See my work" · «راسليني واتساب» / "Message on WhatsApp"
+
+**Marquee keywords:** تصميم الشعارات · مونتاج الفيديو · صور بالذكاء الاصطناعي ·
+تحسين الصور · التصميم الداخلي · المحتوى والتسويق.
+
+**Stats (placeholders — replace with real):** +٦ سنوات خبرة · ٥ مجالات إبداعية ·
+∞ أفكار بالذكاء الاصطناعي · ٪١٠٠ تسليم باحتراف.
+
+**About**
+- Heading: «إبداعٌ يجمع الذوق بالتقنية» / "Creativity that blends taste with tech"
+- Body: «أنا أثير الزهراني، مصمِّمة شغوفة بالذكاء الاصطناعي. أدمج بين الحسّ الفنّي
+  وأحدث أدوات الـ AI لأقدّم أعمالًا بصرية متكاملة: من الفيديو والصور إلى الشعارات
+  والتصميم الداخلي. أعمل عبر أكثر من نموذج لاختيار الأنسب لكل مشروع — مع لمسة بشرية
+  تضمن نتيجة تشبهك وتخدم هدفك.» / EN equivalent in Appendix code.
+
+**Services:** the six cards from §2 (titles + one-line descriptions, bilingual).
+
+**Before/After (signature)**
+- Heading: «من صورة عادية… إلى تحفة احترافية» / "From an ordinary photo… to a pro masterpiece"
+- Body: «أرسلي صورة من جوالك، وتعود إليك بإضاءة وتفاصيل وكأنها التُقطت بكاميرا
+  احترافية — مثالية للعقارات، المنتجات، والأثاث.» · labels «قبل/بعد» / "Before/After".
+
+**Portfolio**
+- Heading: «مختارات من الأعمال» / "Selected work"
+- Note: «هذه صور توضيحية مؤقتة — تُستبدل بأعمال أثير الحقيقية.»
+- Tile categories: صور AI · شعار وهوية · تصميم داخلي · تحسين صور · محتوى · فيديو.
+
+**Process:** ٠١ نتفاهم/Brief · ٠٢ نصمّم/Create · ٠٣ نراجع/Refine · ٠٤ نسلّم/Deliver.
+
+**CTA:** «جاهزة أبدأ مشروعك» / "Let's start your project" + WhatsApp button
+(`https://wa.me/{{WHATSAPP}}`, number is a placeholder).
+
+**Footer:** © {{YEAR}} أثير الزهراني + socials ({{INSTAGRAM}}, …) + DEMO chip.
+
+> **Owner inputs still needed (`{{…}}`):** name confirmation, WhatsApp number,
+> bio (years/city), real project images + one-line each, Instagram/other links.
+
+---
+
+## 10. Images — الصور (placeholders → replace with real work)
+
+All images below are **temporary Unsplash placeholders** chosen to fit each
+slot's theme. **Replace every one with Atheer's real work** (keep the same
+slot/aspect ratio). Apply a subtle monochrome grade (`grayscale(.3) contrast(1.05)`)
+that lifts to full color on hover, to stay on-brand.
+
+| Slot | Theme | Placeholder (Unsplash ID) |
+|---|---|---|
+| Hero background | dark designer / tablet (cinematic) | `1558655146-9f40138edfeb` |
+| About | designer at work (laptop/phone) | `1545235617-9465d2a55698` |
+| Before/After | interior room (real-estate enhance) | `1600607687939-ce8a6c25118c` |
+| Tile · صور AI | abstract gradient (AI vibe) | `1618005182384-a83a8bd57fbe` |
+| Tile · شعار وهوية | brand color swatches | `1561070791-2526d30994b5` |
+| Tile · تصميم داخلي | bright interior | `1600210492493-0946911123ea` |
+| Tile · تحسين صور | cozy interior | `1583847268964-b28dc8f51f92` |
+| Tile · محتوى | creative flatlay | `1493723843671-1d655e66ac1c` |
+| Tile · فيديو | dark tech/editing | `1558655146-9f40138edfeb` |
+
+URL pattern: `https://images.unsplash.com/photo-<ID>?auto=format&fit=crop&w=<W>&q=75`
+
+> **Future hero video:** the design calls for an immersive hero — when Atheer
+> provides a reel/video, use `<video autoplay muted loop playsinline poster=…>`
+> (HLS or MP4) layered behind the headline with the same dark gradient masks.
+
+---
+
+## 11. Build, performance & deployment — البناء والأداء والنشر
+
+- Lives in `landing-pages/atheer/` of the repo; served from a **sub-path**, so
+  use **relative asset paths** (Vite `base:'./'`; or Next `basePath`/`assetPrefix`,
+  `output:'export'`, `trailingSlash:true`, `images.unoptimized:true`).
+- **Self-host** fonts (`assets/fonts/thmanyah/`) and images (`assets/img/`) for
+  production — the prototype inlines them as base64 only so it renders anywhere.
+- Lazy-load images, set explicit width/height, prefer WebP, provide `alt` text.
+- Per the repo's canonical rule (`CLAUDE.md`): **add a card for this page to the
+  root `index.html` gallery** as part of delivery.
+- Two prototype files exist in `landing-pages/atheer/`:
+  `index.html` (self-contained, base64 — renders offline) and
+  `index.source.html` (clean, external URLs — lighter, closer to production).
+
+---
+
+## 12. What "legendary" means — معنى التطوير الأسطوري (upgrade directions)
+
+The Appendix is a strong baseline. To elevate it:
+1. **Real hero video** (her reel) with poster + reduced-motion fallback.
+2. **Interactive before/after slider** (draggable handle) in addition to the auto loop.
+3. **Filterable portfolio** (category chips) + lightbox on click + per-project
+   case studies (problem → what she did → result + tools used).
+4. **Richer micro-interactions:** magnetic buttons, cursor-aware glass glints,
+   parallax depth on hero layers, scroll-linked number/section transitions.
+5. **Performance:** self-hosted/subsetted Arabic font, responsive `srcset`
+   images, prefetch, Lighthouse ≥95.
+6. **Testimonials** section once real quotes exist; trust logos.
+7. **SEO/social:** bilingual `<title>/<meta>`, Open Graph image, `lang/dir`
+   correctness, structured data (Person/CreativeWork).
+8. Keep it **strictly on the design system** — monochrome, glass, Thmanyah.
+
+---
+
+## Appendix A — Complete reference implementation
+## الملحق أ — الكود المرجعي الكامل (HTML + CSS + JS)
+
+This is the exact working prototype (clean version: external Thmanyah font +
+Unsplash placeholder images). Open it as-is, or use it as the baseline to build
+the legendary version. Swap placeholders for real assets and self-host for production.
+
+```html
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<!-- Reference build: external Thmanyah (thmanyah.com via repo) + Unsplash placeholder imagery. Replace placeholders with Atheer's real work. -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#000000" />
+<title>أثير الزهراني — مصمِّمة ومهتمّة بالذكاء الاصطناعي</title>
+<meta name="description" content="بورتفوليو أثير الزهراني: فيديو، صور، شعارات، تصميم داخلي، وتحسين الصور بالذكاء الاصطناعي. (نموذج مبدئي)" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== خط ثمانية / Thmanyah — embedded (self-contained, never fails) ===== */
+@font-face{font-family:'Thmanyah Sans';src:url(https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahsans-Light.woff2) format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Thmanyah Sans';src:url(https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahsans-Regular.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Thmanyah Sans';src:url(https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahsans-Medium.woff2) format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Thmanyah Sans';src:url(https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahsans-Bold.woff2) format('woff2');font-weight:600 700;font-style:normal;font-display:swap}
+@font-face{font-family:'Thmanyah Serif Display';src:url(https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Thmanyah Serif Display';src:url(https://akoz20100-blip.github.io/Landing-page-/landing-pages/eddah/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2) format('woff2');font-weight:600 700;font-style:normal;font-display:swap}
+
+:root{
+  --black:#000;--white:#fff;--muted:rgba(255,255,255,.6);--faint:rgba(255,255,255,.42);
+  --glass-bg:rgba(255,255,255,.03);--glass-strong:rgba(255,255,255,.06);--line:rgba(255,255,255,.13);
+  --radius:16px;--radius-lg:24px;--section:clamp(70px,10vw,120px);--gutter:clamp(20px,5vw,64px);
+  --font-head:'Thmanyah Serif Display',serif;--font-body:'Thmanyah Sans',system-ui,sans-serif;
+  --hs:normal;--ht:normal;--ease:cubic-bezier(.16,1,.3,1);
+}
+html.lang-en{--font-head:'Instrument Serif',Georgia,serif;--font-body:'Barlow',system-ui,sans-serif;--hs:italic;--ht:-.035em}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--black);color:var(--white);font-family:var(--font-body);font-weight:400;line-height:1.75;overflow-x:hidden;min-height:100vh}
+html.lang-en body{line-height:1.6}
+h1,h2,h3,.display{font-family:var(--font-head);font-style:var(--hs);letter-spacing:var(--ht);font-weight:400;line-height:1.05}
+a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
+section{padding-block:var(--section)}
+.wrap{max-width:1200px;margin:0 auto;padding-inline:var(--gutter)}
+
+/* drifting orbs (always-on ambient motion) */
+.orbs{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#000;pointer-events:none}
+.orbs span{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5}
+.orbs .o1{width:42vw;height:42vw;background:rgba(255,255,255,.10);top:-10%;inset-inline-start:-8%;animation:float1 22s ease-in-out infinite alternate}
+.orbs .o2{width:38vw;height:38vw;background:rgba(150,180,255,.10);bottom:-12%;inset-inline-end:-6%;animation:float2 26s ease-in-out infinite alternate}
+.orbs .o3{width:26vw;height:26vw;background:rgba(255,255,255,.06);top:40%;inset-inline-start:55%;animation:float1 30s ease-in-out infinite alternate}
+@keyframes float1{to{transform:translate(8%,10%) scale(1.15)}}
+@keyframes float2{to{transform:translate(-9%,-7%) scale(1.2)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E")}
+
+/* glass */
+.glass{position:relative;background:var(--glass-bg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:var(--radius)}
+.glass::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(135deg,rgba(255,255,255,.6),rgba(255,255,255,.06) 38%,rgba(255,255,255,.02) 62%,rgba(255,255,255,.34));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+
+/* nav */
+.nav{position:fixed;inset-block-start:16px;inset-inline:0;z-index:50;display:flex;justify-content:center;pointer-events:none}
+.nav__inner{pointer-events:auto;display:flex;align-items:center;gap:clamp(12px,3vw,28px);padding:10px 14px 10px 22px;border-radius:999px;background:rgba(0,0,0,.4);backdrop-filter:blur(12px);border:1px solid var(--line);max-width:calc(100% - 24px)}
+.nav__brand{font-family:var(--font-head);font-style:var(--hs);font-size:1.15rem;white-space:nowrap}
+.nav__links{display:flex;gap:22px;font-size:.86rem;color:var(--muted)}
+.nav__links a{transition:color .3s}.nav__links a:hover{color:#fff}
+.nav__right{display:flex;align-items:center;gap:10px;margin-inline-start:auto}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;font-weight:500;font-size:.86rem;padding:9px 18px;transition:transform .3s var(--ease),background .3s,box-shadow .3s,opacity .3s;cursor:pointer;border:0;white-space:nowrap}
+.btn--solid{background:#fff;color:#000}.btn--solid:hover{transform:translateY(-2px)}
+.btn--ghost{background:transparent;color:#fff;border:1px solid var(--line)}.btn--ghost:hover{border-color:rgba(255,255,255,.55)}
+.glow{animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 34px rgba(255,255,255,.32)}}
+.lang{background:transparent;border:1px solid var(--line);color:#fff;border-radius:999px;width:42px;height:34px;font-size:.78rem;font-weight:600;cursor:pointer;transition:border-color .3s}
+.lang:hover{border-color:rgba(255,255,255,.55)}
+@media(max-width:760px){.nav__links{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding-block:130px 70px}
+.hero__media{position:absolute;inset:0;z-index:-1}
+.hero__media img{width:100%;height:100%;object-fit:cover;filter:grayscale(.25) contrast(1.05) brightness(.6);animation:ken 26s ease-in-out infinite alternate}
+@keyframes ken{from{transform:scale(1.1) translate(0,0)}to{transform:scale(1.24) translate(-2%,-3%)}}
+.hero__media::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#000 3%,rgba(0,0,0,.45) 45%,rgba(0,0,0,.65)),linear-gradient(to inline-start,transparent 35%,rgba(0,0,0,.55))}
+.eyebrow{display:inline-flex;align-items:center;gap:.6rem;font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:1.5rem}
+.eyebrow::before{content:'';width:30px;height:1px;background:rgba(255,255,255,.6)}
+html[dir=rtl] .eyebrow{letter-spacing:0}
+.hero h1{font-size:clamp(2.9rem,8.8vw,6.6rem)}
+.hero .lede{margin-top:1.5rem;max-width:52ch;font-size:clamp(1rem,1.7vw,1.22rem);font-weight:300;color:rgba(255,255,255,.78)}
+.hero__cta{margin-top:2.3rem;display:flex;flex-wrap:wrap;gap:14px}
+.hero .btn{padding:13px 26px;font-size:.95rem}
+.scrollcue{position:absolute;inset-block-end:24px;inset-inline-start:50%;transform:translateX(-50%);color:var(--faint);animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translate(-50%,8px)}}
+
+/* marquee */
+.marquee{overflow:hidden;border-block:1px solid var(--line);padding:16px 0;-webkit-mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.marquee__t{display:flex;gap:42px;width:max-content;animation:scroll 24s linear infinite;font-family:var(--font-head);font-style:var(--hs);font-size:clamp(1.3rem,3vw,2rem);color:rgba(255,255,255,.66);white-space:nowrap}
+.marquee__t span{display:inline-flex;gap:42px;align-items:center}
+.marquee__t span::after{content:'✦';color:var(--faint);font-size:.8em}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;overflow:hidden}
+.stats .cell{padding:30px 18px;text-align:center}
+.stats .num{font-family:var(--font-head);font-style:var(--hs);font-size:clamp(2rem,4vw,3.1rem);line-height:1}
+.stats .lab{margin-top:.5rem;font-size:.8rem;color:var(--muted)}
+@media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* section head */
+.shead{max-width:64ch;margin-bottom:clamp(2rem,5vw,3.4rem)}
+.shead .kick{font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+html[dir=rtl] .shead .kick{letter-spacing:0}
+.shead h2{font-size:clamp(2rem,5vw,3.4rem);margin-top:.8rem}
+.shead p{margin-top:1rem;color:var(--muted);font-weight:300;font-size:1.05rem}
+
+/* split */
+.split{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(24px,4vw,56px);align-items:center}
+@media(max-width:860px){.split{grid-template-columns:1fr}}
+.media-card{position:relative;aspect-ratio:4/5;border-radius:var(--radius-lg);overflow:hidden}
+.media-card img{width:100%;height:100%;object-fit:cover;filter:grayscale(.3) contrast(1.05);transition:transform 1.2s var(--ease),filter .6s}
+.media-card:hover img{transform:scale(1.06);filter:grayscale(0)}
+.media-card .cap{position:absolute;inset-block-end:0;inset-inline:0;padding:16px 18px;font-size:.78rem;color:rgba(255,255,255,.75);background:linear-gradient(to top,rgba(0,0,0,.8),transparent)}
+
+/* services */
+.cards{display:grid;gap:clamp(14px,2vw,22px);grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr))}
+.card{padding:30px 28px 34px;display:flex;flex-direction:column;gap:14px;transition:transform .5s var(--ease)}
+.card:hover{transform:translateY(-6px)}
+.ic{width:54px;height:54px;border-radius:999px;display:grid;place-items:center;background:var(--glass-strong);border:1px solid var(--line)}
+.ic svg{width:24px;height:24px;stroke:#fff;fill:none;stroke-width:1.6}
+.card h3{font-size:1.4rem}.card p{color:var(--muted);font-weight:300;font-size:.98rem}
+
+/* before/after auto */
+.ba{position:relative;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ba .before{filter:grayscale(1) brightness(.62) contrast(.9) blur(.4px)}
+.ba .after{filter:saturate(1.25) contrast(1.1) brightness(1.05);animation:wipe 5.5s ease-in-out infinite alternate}
+@keyframes wipe{from{clip-path:inset(0 0 0 66%)}to{clip-path:inset(0 0 0 4%)}}
+.ba .tagb,.ba .taga{position:absolute;inset-block-start:14px;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);border:1px solid var(--line);z-index:2}
+.ba .tagb{inset-inline-end:14px}.ba .taga{inset-inline-start:14px}
+
+/* portfolio */
+.pf{display:grid;gap:clamp(14px,2vw,20px);grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr))}
+.tile{aspect-ratio:4/5;border-radius:var(--radius);position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:18px}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(.4) contrast(1.06) brightness(.85);transition:transform .9s var(--ease),filter .6s;z-index:-2}
+.tile::after{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(0,0,0,.7),transparent 55%)}
+.tile:hover img{transform:scale(1.09);filter:grayscale(0) brightness(.95)}
+.tile .tag{position:absolute;inset-block-start:14px;inset-inline-start:14px;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:5px 11px;border-radius:999px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);border:1px solid var(--line)}
+.tile .ph{font-size:.9rem;color:rgba(255,255,255,.85);font-weight:500}
+
+/* process */
+.steps{display:grid;gap:clamp(14px,2vw,20px);grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr))}
+.step{padding:28px 26px;display:flex;flex-direction:column;gap:10px}
+.step .n{font-family:var(--font-head);font-style:var(--hs);font-size:2.4rem;color:rgba(255,255,255,.85)}
+.step h3{font-size:1.25rem}.step p{color:var(--muted);font-weight:300;font-size:.92rem}
+
+/* cta */
+.cta{text-align:center;padding:clamp(40px,6vw,72px) var(--gutter)}
+.cta h2{font-size:clamp(2.2rem,6vw,4rem)}
+.cta p{margin-top:1rem;color:var(--muted);font-weight:300}
+.cta .btn{margin-top:2rem;padding:15px 34px;font-size:1rem}
+.note{margin-top:1rem;font-size:.74rem;color:var(--faint)}
+
+footer{border-top:1px solid var(--line);padding:40px var(--gutter);display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:center;color:var(--muted);font-size:.85rem}
+.demo-chip{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);padding:5px 11px;border-radius:999px}
+
+.reveal{opacity:0;transform:translateY(40px);filter:blur(10px);transition:opacity .9s var(--ease),transform .9s var(--ease),filter .9s var(--ease)}
+.reveal.in{opacity:1;transform:none;filter:none}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;filter:none;transition:none}
+  .hero__media img,.orbs span,.marquee__t,.ba .after,.scrollcue,.glow{animation:none}
+}
+:focus-visible{outline:2px solid rgba(255,255,255,.7);outline-offset:3px;border-radius:6px}
+</style>
+</head>
+<body>
+<div class="orbs"><span class="o1"></span><span class="o2"></span><span class="o3"></span></div>
+<div class="grain"></div>
+
+<nav class="nav">
+  <div class="nav__inner">
+    <span class="nav__brand" data-ar="أثير الزهراني" data-en="Atheer Al-Zahrani">أثير الزهراني</span>
+    <div class="nav__links">
+      <a href="#about" data-ar="نبذة" data-en="About">نبذة</a>
+      <a href="#services" data-ar="الخدمات" data-en="Services">الخدمات</a>
+      <a href="#work" data-ar="أعمالي" data-en="Work">أعمالي</a>
+      <a href="#contact" data-ar="تواصل" data-en="Contact">تواصل</a>
+    </div>
+    <div class="nav__right">
+      <button class="lang" id="langBtn" aria-label="Switch language">EN</button>
+      <a href="#contact" class="btn btn--solid" data-ar="تواصلي معي" data-en="Let's talk">تواصلي معي</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero__media"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=1600&q=75" alt=""></div>
+  <div class="wrap">
+    <span class="eyebrow reveal" data-ar="مصمِّمة ومهتمّة بالذكاء الاصطناعي" data-en="AI Creative Designer">مصمِّمة ومهتمّة بالذكاء الاصطناعي</span>
+    <h1 class="reveal" data-ar-html="فنٌّ بصري<br>بحِرفيّة الذكاء الاصطناعي" data-en-html="Visual artistry,<br>powered by AI">فنٌّ بصري<br>بحِرفيّة الذكاء الاصطناعي</h1>
+    <p class="lede reveal" data-ar="فيديو، صور، شعارات، وتصميم داخلي — وتحويل أي صورة عادية إلى صورة احترافية وكأنها التُقطت بكاميرا محترفة. كل ما تحتاجه علامتك في مكان واحد." data-en="Video, photos, logos and interior design — plus turning any ordinary photo into a pro-camera-quality shot. Everything your brand needs, in one place.">فيديو، صور، شعارات، وتصميم داخلي — وتحويل أي صورة عادية إلى صورة احترافية وكأنها التُقطت بكاميرا محترفة. كل ما تحتاجه علامتك في مكان واحد.</p>
+    <div class="hero__cta reveal">
+      <a href="#work" class="btn btn--solid glow" data-ar="شوفي أعمالي" data-en="See my work">شوفي أعمالي</a>
+      <a href="#contact" class="btn btn--ghost" data-ar="راسليني واتساب" data-en="Message on WhatsApp">راسليني واتساب</a>
+    </div>
+  </div>
+  <div class="scrollcue"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="6 9 12 15 18 9"/></svg></div>
+</header>
+
+<div class="marquee">
+  <div class="marquee__t" id="mq">
+    <span data-ar="تصميم الشعارات" data-en="Logo design"></span><span data-ar="مونتاج الفيديو" data-en="Video editing"></span><span data-ar="صور بالذكاء الاصطناعي" data-en="AI imagery"></span><span data-ar="تحسين الصور" data-en="Photo enhancement"></span><span data-ar="التصميم الداخلي" data-en="Interior design"></span><span data-ar="المحتوى والتسويق" data-en="Content & marketing"></span>
+  </div>
+</div>
+
+<section style="padding-block:0"><div class="wrap">
+  <div class="stats glass reveal">
+    <div class="cell"><div class="num" data-count="6" data-suffix="+">٠</div><div class="lab" data-ar="سنوات خبرة" data-en="Years experience">سنوات خبرة</div></div>
+    <div class="cell"><div class="num" data-count="5">٠</div><div class="lab" data-ar="مجالات إبداعية" data-en="Creative fields">مجالات إبداعية</div></div>
+    <div class="cell"><div class="num">∞</div><div class="lab" data-ar="أفكار بالذكاء الاصطناعي" data-en="AI-powered ideas">أفكار بالذكاء الاصطناعي</div></div>
+    <div class="cell"><div class="num" data-count="100" data-suffix="٪">٠</div><div class="lab" data-ar="تسليم باحتراف" data-en="Pro delivery">تسليم باحتراف</div></div>
+  </div>
+</div></section>
+
+<section id="about"><div class="wrap split">
+  <div class="reveal"><div class="shead" style="margin:0">
+    <span class="kick" data-ar="نبذة" data-en="About">نبذة</span>
+    <h2 data-ar="إبداعٌ يجمع الذوق بالتقنية" data-en="Creativity that blends taste with tech">إبداعٌ يجمع الذوق بالتقنية</h2>
+    <p data-ar="أنا أثير الزهراني، مصمِّمة شغوفة بالذكاء الاصطناعي. أدمج بين الحسّ الفنّي وأحدث أدوات الـ AI لأقدّم أعمالًا بصرية متكاملة: من الفيديو والصور إلى الشعارات والتصميم الداخلي. أعمل عبر أكثر من نموذج لاختيار الأنسب لكل مشروع — مع لمسة بشرية تضمن نتيجة تشبهك وتخدم هدفك." data-en="I'm Atheer Al-Zahrani, a designer passionate about AI. I blend artistic taste with the latest AI tools to deliver complete visual work — from video and photos to logos and interior design, with a human touch that keeps results on-brand.">أنا أثير الزهراني، مصمِّمة شغوفة بالذكاء الاصطناعي. أدمج بين الحسّ الفنّي وأحدث أدوات الـ AI لأقدّم أعمالًا بصرية متكاملة: من الفيديو والصور إلى الشعارات والتصميم الداخلي. أعمل عبر أكثر من نموذج لاختيار الأنسب لكل مشروع — مع لمسة بشرية تضمن نتيجة تشبهك وتخدم هدفك.</p>
+  </div></div>
+  <div class="media-card glass reveal">
+    <img src="https://images.unsplash.com/photo-1545235617-9465d2a55698?auto=format&fit=crop&w=1100&q=75" alt="">
+    <div class="cap" data-ar="صورة أثير — مؤقتة، تُستبدل بصورتها" data-en="Atheer's photo — placeholder">صورة أثير — مؤقتة، تُستبدل بصورتها</div>
+  </div>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <div class="shead reveal">
+    <span class="kick" data-ar="الخدمات" data-en="Services">الخدمات</span>
+    <h2 data-ar="ماذا أقدّم لعلامتك" data-en="What I do for your brand">ماذا أقدّم لعلامتك</h2>
+    <p data-ar="مجالات متكاملة — كلها مدعومة بالذكاء الاصطناعي وبذوق مصمِّمة." data-en="Complete creative fields — all AI-powered, with a designer's eye.">مجالات متكاملة — كلها مدعومة بالذكاء الاصطناعي وبذوق مصمِّمة.</p>
+  </div>
+  <div class="cards">
+    <div class="glass card reveal"><div class="ic"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><h3 data-ar="مونتاج وتحرير الفيديو" data-en="Video Editing">مونتاج وتحرير الفيديو</h3><p data-ar="ريلز، إعلانات قصيرة، ومحتوى سوشال جاهز للنشر." data-en="Reels, short ads, and social-ready video.">ريلز، إعلانات قصيرة، ومحتوى سوشال جاهز للنشر.</p></div>
+    <div class="glass card reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div><h3 data-ar="توليد الصور بالذكاء الاصطناعي" data-en="AI Image Generation">توليد الصور بالذكاء الاصطناعي</h3><p data-ar="صور منتجات وأشخاص ومشاهد احترافية عبر عدّة نماذج." data-en="Pro product, portrait & scene imagery via multiple models.">صور منتجات وأشخاص ومشاهد احترافية عبر عدّة نماذج.</p></div>
+    <div class="glass card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 16.5 7.1 18.1l.9-5.5-4-3.9 5.5-.8z"/></svg></div><h3 data-ar="تحسين الصور الاحترافي" data-en="Pro Photo Enhancement">تحسين الصور الاحترافي</h3><p data-ar="حوّلي أي صورة عادية إلى جودة كاميرا احترافية — مثالية للعقار والمنتجات." data-en="Turn any ordinary photo into pro-camera quality — perfect for real estate & products.">حوّلي أي صورة عادية إلى جودة كاميرا احترافية — مثالية للعقار والمنتجات.</p></div>
+    <div class="glass card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></div><h3 data-ar="تصميم الشعارات والهوية" data-en="Logo & Brand Identity">تصميم الشعارات والهوية</h3><p data-ar="شعار + ألوان + خطوط ودليل استخدام متكامل لعلامتك." data-en="Logo + colors + type + a full brand guide.">شعار + ألوان + خطوط ودليل استخدام متكامل لعلامتك.</p></div>
+    <div class="glass card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M2 14a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3H2z"/><path d="M5 17v2M19 17v2"/></svg></div><h3 data-ar="التصميم الداخلي والأثاث" data-en="Interior & Furniture">التصميم الداخلي والأثاث</h3><p data-ar="تصوّرات واقعية لمساحاتك وتنسيق الأثاث بالذكاء الاصطناعي." data-en="Realistic visualizations of spaces & furniture styling with AI.">تصوّرات واقعية لمساحاتك وتنسيق الأثاث بالذكاء الاصطناعي.</p></div>
+    <div class="glass card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg></div><h3 data-ar="المحتوى والتسويق" data-en="Content & Marketing">المحتوى والتسويق</h3><p data-ar="أفكار حملات ومحتوى بصري ونصّي يجذب عميلك المستهدف." data-en="Campaign ideas & content that attracts your audience.">أفكار حملات ومحتوى بصري ونصّي يجذب عميلك المستهدف.</p></div>
+  </div>
+</div></section>
+
+<section id="enhance"><div class="wrap split">
+  <div class="reveal"><div class="shead" style="margin:0">
+    <span class="kick" data-ar="الخدمة المميّزة" data-en="Signature service">الخدمة المميّزة</span>
+    <h2 data-ar="من صورة عادية… إلى تحفة احترافية" data-en="From an ordinary photo… to a pro masterpiece">من صورة عادية… إلى تحفة احترافية</h2>
+    <p data-ar="أرسلي صورة من جوالك، وتعود إليك بإضاءة وتفاصيل وكأنها التُقطت بكاميرا احترافية — مثالية للعقارات، المنتجات، والأثاث. (شاهدي التحوّل يتحرك)" data-en="Send a photo from your phone, and get it back with lighting and detail as if shot on a pro camera — perfect for real estate, products and furniture.">أرسلي صورة من جوالك، وتعود إليك بإضاءة وتفاصيل وكأنها التُقطت بكاميرا احترافية — مثالية للعقارات، المنتجات، والأثاث. (شاهدي التحوّل يتحرك)</p>
+  </div></div>
+  <div class="ba glass reveal">
+    <img class="before" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=75" alt="">
+    <img class="after" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=75" alt="">
+    <span class="tagb" data-ar="قبل" data-en="Before">قبل</span>
+    <span class="taga" data-ar="بعد" data-en="After">بعد</span>
+  </div>
+</div></section>
+
+<section id="work"><div class="wrap">
+  <div class="shead reveal">
+    <span class="kick" data-ar="أعمالي" data-en="Work">أعمالي</span>
+    <h2 data-ar="مختارات من الأعمال" data-en="Selected work">مختارات من الأعمال</h2>
+    <p data-ar="هذه صور توضيحية مؤقتة — تُستبدل بأعمال أثير الحقيقية." data-en="These are temporary sample images — to be replaced with Atheer's real work.">هذه صور توضيحية مؤقتة — تُستبدل بأعمال أثير الحقيقية.</p>
+  </div>
+  <div class="pf">
+    <div class="tile reveal"><img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=900&q=75" alt=""><span class="tag" data-ar="صور AI" data-en="AI photos">صور AI</span><span class="ph" data-ar="توليد صور" data-en="AI imagery">توليد صور</span></div>
+    <div class="tile reveal"><img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=900&q=75" alt=""><span class="tag" data-ar="شعار وهوية" data-en="Branding">شعار وهوية</span><span class="ph" data-ar="هوية بصرية" data-en="Brand identity">هوية بصرية</span></div>
+    <div class="tile reveal"><img src="https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=900&q=75" alt=""><span class="tag" data-ar="تصميم داخلي" data-en="Interior">تصميم داخلي</span><span class="ph" data-ar="تصميم مساحة" data-en="Space design">تصميم مساحة</span></div>
+    <div class="tile reveal"><img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=75" alt=""><span class="tag" data-ar="تحسين صور" data-en="Enhance">تحسين صور</span><span class="ph" data-ar="جودة احترافية" data-en="Pro quality">جودة احترافية</span></div>
+    <div class="tile reveal"><img src="https://images.unsplash.com/photo-1493723843671-1d655e66ac1c?auto=format&fit=crop&w=900&q=75" alt=""><span class="tag" data-ar="محتوى" data-en="Content">محتوى</span><span class="ph" data-ar="محتوى سوشال" data-en="Social content">محتوى سوشال</span></div>
+    <div class="tile reveal"><img src="https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=900&q=75" alt=""><span class="tag" data-ar="فيديو" data-en="Video">فيديو</span><span class="ph" data-ar="مونتاج" data-en="Editing">مونتاج</span></div>
+  </div>
+</div></section>
+
+<section id="process"><div class="wrap">
+  <div class="shead reveal"><span class="kick" data-ar="آلية العمل" data-en="Process">آلية العمل</span><h2 data-ar="كيف نشتغل" data-en="How it works">كيف نشتغل</h2></div>
+  <div class="steps">
+    <div class="glass step reveal"><span class="n">٠١</span><h3 data-ar="نتفاهم" data-en="Brief">نتفاهم</h3><p data-ar="أفهم فكرتك وهدفك." data-en="I learn your idea & goal.">أفهم فكرتك وهدفك.</p></div>
+    <div class="glass step reveal"><span class="n">٠٢</span><h3 data-ar="نصمّم" data-en="Create">نصمّم</h3><p data-ar="مسودّات وخيارات بالذكاء الاصطناعي." data-en="Drafts & AI-powered options.">مسودّات وخيارات بالذكاء الاصطناعي.</p></div>
+    <div class="glass step reveal"><span class="n">٠٣</span><h3 data-ar="نراجع" data-en="Refine">نراجع</h3><p data-ar="تعديلات حتى تعتمدين." data-en="Revisions until you approve.">تعديلات حتى تعتمدين.</p></div>
+    <div class="glass step reveal"><span class="n">٠٤</span><h3 data-ar="نسلّم" data-en="Deliver">نسلّم</h3><p data-ar="ملفات نهائية جاهزة للاستخدام." data-en="Final, ready-to-use files.">ملفات نهائية جاهزة للاستخدام.</p></div>
+  </div>
+</div></section>
+
+<section id="contact" class="wrap"><div class="glass cta reveal">
+  <h2 data-ar="جاهزة أبدأ مشروعك" data-en="Let's start your project">جاهزة أبدأ مشروعك</h2>
+  <p data-ar="عندك فكرة أو علامة تجارية؟ راسليني على واتساب وخلّينا نحوّلها لواقع." data-en="Have an idea or a brand? Message me on WhatsApp and let's make it real.">عندك فكرة أو علامة تجارية؟ راسليني على واتساب وخلّينا نحوّلها لواقع.</p>
+  <a href="https://wa.me/9665XXXXXXXX" class="btn btn--solid glow" data-ar="تواصلي عبر واتساب" data-en="Message on WhatsApp">تواصلي عبر واتساب</a>
+  <div class="note" data-ar="* الرقم تجريبي — يُستبدل برقمك الحقيقي." data-en="* Placeholder number — replace with the real one.">* الرقم تجريبي — يُستبدل برقمك الحقيقي.</div>
+</div></section>
+
+<footer>
+  <span data-ar="© ٢٠٢٦ أثير الزهراني — جميع الحقوق محفوظة" data-en="© 2026 Atheer Al-Zahrani — All rights reserved">© ٢٠٢٦ أثير الزهراني — جميع الحقوق محفوظة</span>
+  <span class="demo-chip" data-ar="نموذج مبدئي · DEMO" data-en="Preview · DEMO">نموذج مبدئي · DEMO</span>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('langBtn');
+  function apply(lang){
+    root.lang=lang; root.dir=(lang==='ar')?'rtl':'ltr';
+    root.classList.toggle('lang-en',lang==='en');
+    document.querySelectorAll('[data-ar]').forEach(function(el){ el.textContent=el.getAttribute('data-'+lang); });
+    document.querySelectorAll('[data-ar-html]').forEach(function(el){ el.innerHTML=el.getAttribute('data-'+lang+'-html'); });
+    btn.textContent=(lang==='ar')?'EN':'ع';
+    try{localStorage.setItem('atheer-lang',lang);}catch(e){}
+  }
+  var saved='ar'; try{saved=localStorage.getItem('atheer-lang')||'ar';}catch(e){}
+  apply(saved);
+  btn.addEventListener('click',function(){ apply(root.lang==='ar'?'en':'ar'); });
+
+  // duplicate marquee content for seamless loop
+  var mq=document.getElementById('mq'); if(mq){ mq.innerHTML+=mq.innerHTML; }
+
+  // count-up
+  function toAr(n){ return root.lang==='ar' ? String(n).replace(/[0-9]/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[d];}) : String(n); }
+  function count(el){
+    var target=+el.getAttribute('data-count'), suf=el.getAttribute('data-suffix')||'', t0=null, dur=1300;
+    function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1); var v=Math.round(target*(0.2+0.8*p)*1); el.textContent=toAr(Math.round(target*p))+suf; if(p<1)requestAnimationFrame(step); else el.textContent=toAr(target)+suf; }
+    requestAnimationFrame(step);
+  }
+
+  var els=[].slice.call(document.querySelectorAll('.reveal'));
+  function showAll(){ els.forEach(function(el){el.classList.add('in');}); document.querySelectorAll('[data-count]').forEach(count); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          var sibs=[].slice.call(e.target.parentNode.children).filter(function(n){return n.classList.contains('reveal');});
+          e.target.style.transitionDelay=(Math.max(0,sibs.indexOf(e.target))*0.06)+'s';
+          e.target.classList.add('in');
+          e.target.querySelectorAll&&e.target.querySelectorAll('[data-count]').forEach(count);
+          if(e.target.querySelector&&e.target.matches('[data-count]'))count(e.target);
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:.12,rootMargin:'0px 0px -70px 0px'});
+    els.forEach(function(el){io.observe(el);});
+    // safety: ensure nothing stays hidden
+    setTimeout(showAll,1400);
+  } else { showAll(); }
+})();
+</script>
+</body>
+</html>
+
+```
