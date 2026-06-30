@@ -30,6 +30,7 @@ this file is ready. عبّي القيم التالية أو أرسلها لي و
 | `{{INSTAGRAM}}` | رابط إنستغرام (اختياري) | — |
 | `{{OTHER_LINKS}}` | TikTok / YouTube / Behance / LinkedIn (اختياري) | — |
 | `{{PROJECTS}}` | الصور + وصف سطر لكل مشروع (انظر قالب المشاريع) | — |
+| `{{HERO_MEDIA}}` | فيديو الواجهة (Hero) + صورة poster — التصميم يعتمد خلفية فيديو (اختياري الآن، "الصور بعدين") | — |
 
 ---
 
@@ -205,8 +206,8 @@ Template: quote • client name • business • (optional) logo/avatar.
 
 Per `CLAUDE.md`: a new landing page goes in `landing-pages/{{slug}}/` and **must
 be added as a card in the root `index.html` gallery** as part of delivery.
-The gallery is dark + gold, RTL, IBM Plex Sans Arabic — see `02-DESIGN-SYSTEM.md`
-for how this page can harmonize with (or intentionally differ from) it.
+This page uses the **Digitize "Liquid Glass"** design system (strict monochrome,
+glassmorphism) with Arabic in **خط ثمانية / Thmanyah** — see `02-DESIGN-SYSTEM.md`.
 Use relative asset paths and the repo's base-path setup to avoid 404s.
 
 > Suggested slug: `{{slug}}` (e.g. her first name in latin letters).

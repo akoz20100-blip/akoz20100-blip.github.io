@@ -1,197 +1,186 @@
-# Design System — نظام التصميم
-
-> **What this file is / ما هو هذا الملف**
-> This describes **how the portfolio looks & feels** — colors, type, spacing,
-> components, motion. It pairs with `01-CONTENT.md` (which describes *what it
-> says*). A design/AI tool reads both to build the page.
->
-> هذا الملف يصف **الشكل والإحساس** (ألوان، خطوط، مسافات، مكوّنات، حركة). يبقى
-> **ثابتاً** حتى لو تغيّر المحتوى. إن كان عندك ملف تصميم خاص، استبدل القيم في
-> القسم (Tokens) بقيمك مع إبقاء البنية كما هي.
->
-> **Status / الحالة:** Default system, harmonized with the existing gallery
-> (dark + gold, RTL, IBM Plex Sans Arabic). Override any token to make it yours.
-
+---
+version: 1.1.0
+name: Digitize Ventures VC Template (bilingual — AR via Thmanyah)
+description: Sophisticated investment-grade aesthetic — blur-heavy glassmorphism, italic serif display headings, strict monochrome. Bilingual AR/EN; Arabic uses خط ثمانية (Thmanyah), sourced from thmanyah.com exactly like the `eddah` & `jamal-v2` projects.
+colors:
+  black: "#000000"
+  white: "#FFFFFF"
+  white-transparent-10: "rgba(255, 255, 255, 0.1)"
+  white-transparent-40: "rgba(255, 255, 255, 0.4)"
+  white-transparent-60: "rgba(255, 255, 255, 0.6)"
+  glass-bg: "rgba(255, 255, 255, 0.01)"
+  glass-border: "rgba(255, 255, 255, 0.45)"
+  primary: "hsl(0, 0%, 100%)"
+  muted: "hsl(213, 35%, 60%)"
+typography:
+  heading-latin:
+    family: "'Instrument Serif', serif"
+    weight: "400"
+    style: "italic"
+    letterSpacing: "-0.05em"
+  heading-arabic:                       # خط ثمانية — display
+    family: "'Thmanyah Serif Display', serif"
+    weight: "400, 500, 700"
+    style: "normal"                     # Arabic is NOT italicized
+    letterSpacing: "normal"             # do NOT apply -0.05em to Arabic
+  body-latin:
+    family: "'Barlow', sans-serif"
+    weight: "300, 400, 500"
+    lineHeight: "1.6"
+  body-arabic:                          # خط ثمانية — sans
+    family: "'Thmanyah Sans', sans-serif"
+    weight: "300, 400, 500"
+    lineHeight: "1.7"                    # Arabic benefits from extra leading
+spacing:
+  xs: "4px"
+  sm: "8px"
+  md: "16px"
+  lg: "24px"
+  xl: "32px"
+  section: "128px"
+rounded:
+  none: "0px"
+  sm: "8px"
+  md: "12px"
+  lg: "16px"
+  full: "9999px"
+components:
+  navbar:
+    type: "fixed-floating"
+    blur: "12px"
+    z-index: "50"
+  liquid-card:
+    type: "glassmorphic"
+    border: "1.4px gradient"
+    blur: "4px"
+  hero:
+    type: "immersive-video"
+    height: "1000px"
+    overlay: "black/40"
+  cta-button:
+    type: "rounded-pill"
+    transition: "300ms ease"
+motion:
+  stagger: "0.05s"
+  blur-reveal: "10px to 0px"
+  y-offset: "40px"
 ---
 
-## 0) Design principles — مبادئ التصميم
+> **Note / ملاحظة:** This is the canonical **design system** for the portfolio
+> (provided by the owner). It pairs with `01-CONTENT.md` (what the page says).
+> The only adaptation made for this repo is the **Arabic typography layer** (خط
+> ثمانية / Thmanyah) and the **bilingual + RTL** rules — see §Typography, §Bilingual
+> & RTL, and §Build below. Everything else is the original Digitize Ventures spec.
 
-1. **Let the work shine / العمل هو البطل.** Imagery first; UI stays quiet and premium.
-2. **Premium & calm / فخامة وهدوء.** Generous whitespace, restrained palette, one accent.
-3. **Bilingual-native / ثنائية اللغة أصالةً.** Looks right in both RTL (default) and LTR.
-4. **Fast & accessible / سريعة وسهلة الوصول.** Mobile-first, AA contrast, real focus states.
-5. **One clear action / إجراء واحد واضح.** WhatsApp CTA is always within reach.
+## Overview
+The Digitize Ventures visual system is defined by "Liquid Glass"—a combination of deep black backgrounds, extreme edge-blurring, and high-quality video textures. It is designed to convey technical excellence and institutional trust.
 
-**Mood:** elegant & modern with a subtle AI/tech edge (soft gold glow on dark).
-> ⚠️ If you want a different mood (e.g. light & feminine pastels), change the
-> tokens in §1–§3 only — components in §4+ stay the same.
+## Colors
+- **Primary Surface**: Pure black (#000000) used for the base layer to maximize contrast.
+- **Accents**: Pure white (#FFFFFF) for text and core CTA elements.
+- **Glass Layers**: Low-opacity whites (1% to 10%) with heavy backdrop filters create the depth-of-field effect.
+- **Interactive**: Hover states often involve scaling or increasing opacity rather than color shifts.
+- **Strictly monochrome** — color comes only from the video/imagery, never from UI accents.
 
----
+## Typography
 
-## 1) Color tokens — الألوان
+### Latin (English mode)
+- **Display Serif**: `Instrument Serif`, used **exclusively italic** for headings — editorial feel. Tracking tightened severely to `-0.05em`.
+- **Functional Sans**: `Barlow` (300/400/500) for navigation, labels, and body.
 
-**Default (dark, harmonized with the gallery):**
+### Arabic (Arabic mode) — خط ثمانية / Thmanyah
+The Arabic counterpart of the serif/sans pairing, **sourced from `thmanyah.com`** (the same files already used by `eddah` and `jamal-v2` in this repo):
+- **Display**: `Thmanyah Serif Display` (400/500/700) — the Arabic equivalent of Instrument Serif for all headings. **Upright, not italic** (Arabic is never synthetically italicized).
+- **Functional**: `Thmanyah Sans` (300/400/500) — the Arabic equivalent of Barlow for nav, labels, body.
+- **Arabic tracking exception**: do **NOT** apply the `-0.05em` letter-spacing to Arabic — keep `letter-spacing: normal` so cursive joining stays intact. Use `line-height: 1.7` for Arabic body.
+
+### Bilingual font mapping
+| Role | English | Arabic |
+|---|---|---|
+| Headings / display | Instrument Serif *(italic, -0.05em)* | Thmanyah Serif Display *(upright, normal tracking)* |
+| Body / UI | Barlow | Thmanyah Sans |
+
+### `@font-face` — self-host خط ثمانية (copy the repo's pattern)
+The repo self-hosts the Thmanyah `.woff2` files (originals from thmanyah.com). Copy
+`landing-pages/eddah/fonts/thmanyah/*.woff2` (or `jamal-v2/assets/fonts/thmanyah/`)
+into the new project at `assets/fonts/thmanyah/`, then declare — mirroring
+`landing-pages/jamal-v2/_source/src/index.css`:
+
 ```css
-:root {
-  /* base */
-  --ink:        #0a0a0a;  /* page background        خلفية */
-  --surface:    #141414;  /* cards                  بطاقات */
-  --surface-2:  #1c1c1c;  /* raised / media         سطح مرتفع */
-  --line:       #2a2a2a;  /* borders & dividers     حدود */
-  /* text */
-  --cream:      #f5f2ec;  /* primary text           نص أساسي */
-  --muted:      #8a8a8a;  /* secondary text         نص ثانوي */
-  /* accent */
-  --gold:       #c09a62;  /* primary accent / CTA   لون مميز */
-  --gold-soft:  rgba(192,154,98,0.12); /* glows, tints */
-  /* feedback */
-  --success:    #5fbf8a;
-  --whatsapp:   #25d366;  /* keep WhatsApp green for its button */
-}
+/* Thmanyah typeface (Arabic) — same family used on thmanyah.com */
+@font-face { font-family:'Thmanyah Sans'; src:url('./assets/fonts/thmanyah/thmanyahsans-Light.woff2')   format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('./assets/fonts/thmanyah/thmanyahsans-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('./assets/fonts/thmanyah/thmanyahsans-Medium.woff2')  format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Sans'; src:url('./assets/fonts/thmanyah/thmanyahsans-Bold.woff2')    format('woff2'); font-weight:600 700; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('./assets/fonts/thmanyah/thmanyahserifdisplay-Regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('./assets/fonts/thmanyah/thmanyahserifdisplay-Medium.woff2')  format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+@font-face { font-family:'Thmanyah Serif Display'; src:url('./assets/fonts/thmanyah/thmanyahserifdisplay-Bold.woff2')    format('woff2'); font-weight:600 700; font-style:normal; font-display:swap; }
 ```
-**Ambient glow (used on body in the gallery — keep for continuity):**
-```css
-background-image:
-  radial-gradient(closest-side at 18% 12%, rgba(192,154,98,0.08), transparent),
-  radial-gradient(closest-side at 85% 90%, rgba(192,154,98,0.05), transparent);
+Available weights in the repo's font folder: `Light, Regular, Medium, Bold, Black`
+for **both** `thmanyahsans-*` and `thmanyahserifdisplay-*`.
+
+Latin faces load from Google Fonts:
+```html
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 ```
 
-**Optional alternative palette — Light & warm (if you prefer a brighter feel):**
-```css
-:root {
-  --ink:#1b1714; --surface:#ffffff; --surface-2:#f6f1ea; --line:#e7ddcf;
-  --cream:#1b1714; --muted:#7a7068; --gold:#b07d3c; --gold-soft:rgba(176,125,60,0.12);
-}
-```
-> Pick **one** palette. Contrast must stay AA (≥4.5:1 body text, ≥3:1 large text).
+## Spacing
+A generous 8pt grid system. Section padding is aggressive (128px+) to allow the video backgrounds and glass elements to breathe.
 
----
+## Layout
+- **Depth Stacks**: Video (Background) → Gradient Fades (Midground) → Content/Liquid Glass (Foreground).
+- **Asymmetry**: Uses a "Chess" pattern (alternating left/right alignment) in feature sections to maintain visual interest. *(Mirrors automatically in RTL.)*
+- **Fixed Elements**: Navigation is fixed with a 16px top offset to create a floating appearance.
 
-## 2) Typography — الخطوط
+## Elevation & Depth
+- **Backdrop Blur**: 4px (standard liquid-glass) up to 50px (liquid-glass-strong).
+- **Inner Glow**: Buttons and cards use a 1.4px white gradient border to simulate light catching the edge of the glass.
+- **Gradients**: Top and bottom black-to-transparent masks isolate content sections against continuous video backgrounds.
 
-- **Arabic + Latin (single family for consistency):** `IBM Plex Sans Arabic`
-  — weights 300/400/500/600/700. Loaded via Google Fonts (already used by the gallery):
-  ```html
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+## Shapes
+- **Pills**: All primary buttons and small status badges use `rounded-full` (9999px).
+- **Soft Rectangles**: Content cards and feature images use `2xl` (16px) or `3xl` rounding.
+
+## Components
+- **Floating Navbar**: A composite pill-shaped bar with separate logo and link modules. *(Add the AR/EN language toggle here.)*
+- **Video Hero**: Full-bleed background video with a blur-reveal text entry.
+- **Stats Bar**: A centered glass panel featuring large italic (EN) / display (AR) numbers.
+- **Pillar Cards**: Vertical layouts with iconify-icons in strong glass circles. *(Use for the 6 services.)*
+- **Application / Process Steps**: Sequential glass cards with tracking numbers (01, 02, …).
+- **Liquid-glass project cards**: Use for the portfolio gallery (image + title + 1-line desc).
+
+## Motion
+- **Blur Reveal**: Text transitions from 10px blur + 40px Y-offset to sharp focus.
+- **Springs**: High-stiffness, moderate-damping spring physics for snappy transitions.
+- **Video Playback**: HLS streaming for immediate texture without long loads.
+- Respect `prefers-reduced-motion: reduce`.
+
+## Bilingual & RTL — ثنائية اللغة والاتجاه
+- Default locale **Arabic / RTL**; toggle swaps `<html lang dir>` (`ar`/`rtl` ↔ `en`/`ltr`), copy, **and the font stack** (Thmanyah ↔ Instrument/Barlow), persisted in `localStorage` — same mechanism as `jamal-v2` (`LangToggle`).
+- Locale CSS hook (mirrors `jamal-v2/_source/src/index.css`):
+  ```css
+  html[lang='ar'] body { font-family:'Thmanyah Sans', system-ui, sans-serif; line-height:1.7; }
+  html[lang='ar'] h1, html[lang='ar'] h2, html[lang='ar'] h3, html[lang='ar'] .font-display {
+    font-family:'Thmanyah Serif Display', 'Thmanyah Sans', serif; font-style:normal; letter-spacing:normal;
+  }
   ```
-- **Optional display accent (headlines only):** a high-contrast Arabic display
-  face (e.g. `Tajawal` 800 / `Cairo`) — use sparingly, keep body in Plex.
-- **Fallback stack:** `'IBM Plex Sans Arabic', system-ui, 'Segoe UI', sans-serif`
+- Use logical properties (`margin-inline`, `inset-inline-start`) so the "Chess" asymmetry, floating navbar, and gradients mirror automatically. Flip directional icons with `dir`.
 
-**Type scale (fluid, `clamp()`):**
-```
-h1 / hero   : clamp(2.5rem, 7vw, 5.5rem)   weight 700  line 1.02  tracking -0.01em
-h2 / section: clamp(1.8rem, 4vw, 3rem)     weight 600  line 1.1
-h3 / card   : clamp(1.3rem, 2.5vw, 1.6rem) weight 600  line 1.15
-lede        : clamp(1rem, 1.6vw, 1.2rem)   weight 300  color --muted
-body        : 1rem  weight 400  line 1.6
-small/eyebrow: 0.72rem weight 600 letter-spacing 0.18em UPPERCASE color --gold
-```
-> Body line-height 1.6 suits Arabic well. Avoid weights <300 for Arabic legibility.
+## Do's and Don'ts
+- **Do**: Use *italic* Instrument Serif for Latin headings; **upright** Thmanyah Serif Display for Arabic headings.
+- **Do**: Apply `backdrop-blur` to all overlapping UI elements.
+- **Do**: Self-host خط ثمانية from the originals (thmanyah.com / the repo's existing files).
+- **Don't**: Apply negative `letter-spacing` to Arabic text.
+- **Don't**: Use solid borders; always use the transparent mask border-padding trick for liquid glass.
+- **Don't**: Introduce accent colors (blue/green/gold); keep the palette strictly monochrome — color comes from the video/imagery only.
 
----
+## Accessibility
+- **Contrast**: White on black/dark-video, high contrast throughout.
+- **Motion**: `whileInView` with `-100px` margin; honor reduced-motion.
+- **Readability**: Body weights 300/400, minimum 14px. Arabic body min 15px + line-height 1.7 for comfortable reading.
 
-## 3) Spacing, radius, shadow, layout — المسافات والزوايا والظلال
-
-```css
---container: 1180px;                 /* max content width */
---pad-x: clamp(1.25rem, 4vw, 4rem);  /* page side padding */
---section-y: clamp(2.5rem, 5vw, 6rem);
---gap: clamp(1.25rem, 2.5vw, 2rem);  /* grid gap */
---radius: 18px;                      /* cards */
---radius-pill: 999px;                /* tags, buttons */
---shadow-card: 0 30px 60px -30px rgba(0,0,0,0.8);
---ease: cubic-bezier(0.16, 1, 0.3, 1);
-```
-- **Grid:** `repeat(auto-fit, minmax(min(100%, 340px), 1fr))` for service/portfolio cards.
-- **Breakpoints:** mobile ≤640 • tablet 641–1024 • desktop ≥1025. Mobile-first.
-
----
-
-## 4) Components — المكوّنات
-
-### Buttons — الأزرار
-- **Primary / WhatsApp:** background `--whatsapp` (or `--gold` for non-WhatsApp CTAs), text dark/cream, pill radius, icon + label, hover lift `translateY(-2px)` + glow.
-- **Secondary / ghost:** transparent, `1px solid --line`, text `--cream`, hover `border-color: --gold`.
-- All buttons: `:focus-visible` ring in `--gold`; min touch target 44×44px.
-
-### Cards (service & portfolio) — البطاقات
-Mirror the gallery card so the new page feels native:
-- `1px solid --line`, `--radius`, `background: --surface`, `overflow: hidden`.
-- Media: `aspect-ratio: 16/10`, `object-fit: cover`, image `filter: saturate(.92) brightness(.82)`.
-- Hover: `transform: translateY(-6px)`, `border-color: rgba(192,154,98,.55)`, `box-shadow: --shadow-card`, image `scale(1.06)` + brightens. Transition `.55s var(--ease)`.
-- Tag chip: pill, `backdrop-filter: blur(6px)`, uppercase 0.66rem.
-- CTA row with arrow icon that slides on hover (in RTL it slides `translateX(-6px)`).
-
-### Navbar — الشريط العلوي
-- Sticky, translucent (`backdrop-filter: blur`), thin bottom border `--line`.
-- Left (RTL: right): name/logo. Center: anchor links. End: **language toggle** + WhatsApp button.
-- Collapses to a hamburger/drawer on mobile.
-
-### Language toggle — مبدّل اللغة
-- A clear `ع / EN` switch. Toggling updates `<html lang dir>` (`ar`/`rtl` ↔ `en`/`ltr`),
-  swaps all copy, and mirrors layout. Persist choice (localStorage). Default = Arabic/RTL.
-
-### Section header — ترويسة القسم
-- Eyebrow (gold, uppercase, with the gallery's `::before` 28px gold rule) + h2 + optional lede.
-
-### Filter chips (portfolio) — مرشّحات
-- Pills; active = `--gold` fill; inactive = ghost. Filter cards by category.
-
-### Forms (contact fallback) — النماذج
-- Floating labels, `--surface-2` fields, gold focus ring, inline validation. Keep minimal (name, business, message).
-
----
-
-## 5) Imagery — الصور
-
-- Portfolio images are the hero of the page — show them large and crisp.
-- Format **WebP** (fallback JPG), lazy-loaded (`loading="lazy"`), explicit width/height to avoid layout shift.
-- Subtle dark gradient overlay on media (as in the gallery) for text legibility on tags.
-- Consistent crop ratio per grid (16/10 default); portraits can use 4/5.
-- Every image needs **alt text** (bilingual where natural).
-
----
-
-## 6) Motion — الحركة
-
-- Easing everywhere: `cubic-bezier(0.16, 1, 0.3, 1)`; durations 0.4–0.8s.
-- Entrance: fade + 12–20px rise on scroll (IntersectionObserver), staggered for grids.
-- Hover: lift + image zoom (see Cards). Keep it subtle and premium.
-- **Respect `prefers-reduced-motion: reduce`** — disable transforms/parallax.
-
----
-
-## 7) RTL / LTR — الاتجاه
-
-- Use logical CSS properties (`margin-inline`, `inset-inline-start`, `padding-block`) so layout mirrors automatically.
-- Icons with direction (arrows) flip with `dir`.
-- Numbers/dates: keep Western Arabic numerals unless asked otherwise.
-- Test both directions before delivery.
-
----
-
-## 8) Accessibility — الوصول
-
-- Contrast AA minimum. Visible `:focus-visible` outlines (gold).
-- Semantic landmarks (`header/nav/main/section/footer`), one `h1`, logical heading order.
-- Touch targets ≥44px. Keyboard-operable nav, toggle, filters, and drawer.
-- `alt` on images; `aria-label` on icon-only buttons (incl. WhatsApp).
-
----
-
-## 9) Build & deployment notes — ملاحظات البناء (from CLAUDE.md)
-
-- Served from a sub-path `…/Landing-page-/landing-pages/<slug>/` — **use relative
-  asset paths**. (Vite: `base: './'`; Next: set `basePath`/`assetPrefix`, `output:'export'`, `trailingSlash:true`, `images.unoptimized:true`.)
-- After building, copy `dist/`/`out/` into the published project folder and keep any `_source/`.
-- **Delivery isn't done until a card for this page is added to the root `index.html` gallery** (see CLAUDE.md canonical rule).
-
----
-
-## 10) How to override with your own design MD — كيف تستبدل بنظامك
-
-If you bring your own design file, you only need to change:
-- **§1 Colors**, **§2 Typography**, **§3 spacing/radius** tokens, and the **mood** line in §0.
-Keep **§4 components**, **§5–§8** behavior the same so the content from
-`01-CONTENT.md` keeps working. القيم تتغيّر، والبنية تبقى.
+## Build & deployment (this repo) — البناء والنشر
+- Project lives in `landing-pages/{{slug}}/`; served from a sub-path, so use **relative
+  asset paths** (Vite `base:'./'`). Copy Thmanyah `.woff2` into `assets/fonts/thmanyah/`.
+- Provide a hero **video** (HLS/MP4) and a poster image; the owner will supply imagery ("الصور كامل بعدين").
+- Per `CLAUDE.md`, delivery isn't done until a **card for this page is added to the root `index.html` gallery**.
